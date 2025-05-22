@@ -4,16 +4,66 @@ import { motion } from 'framer-motion';
 import React from 'react';
 
 const Projects = () => {
-    const [projects, setProjects] = useState([]);
+
+    const projects = [
+        {
+            name: 'Maintainer - A Car Management App',
+            description:
+                'An app for managing car maintenance records, service history, and reminders. Features include user authentication, service tracking, and analytics dashboard.',
+            tech_stack: 'Next.js • Tailwind CSS • Node.js • Express.js • MongoDB',
+            repo: 'https://github.com/daredevil17052004/maintainer.git',
+            live_demo: 'https://maintainer-next.netlify.app/',
+            image: '/maintainer.png',
+        },
+        {
+            name: 'AI Meeting Notes Bot',
+            description: 'A bot that joins meetings, transcribes audio, and generates summarized notes.',
+            tech_stack: 'Python • Selenium • Whisper AI • Gemini API',
+            repo: 'https://github.com/Team-DSA/Notei.git',
+            live_demo: 'https://main-ui-phi.vercel.app/',
+            image: '/notei.png',
+        },
+        {
+            name: 'InstruRentals',
+            description:
+                'An online platform for renting musical instruments with user authentication and payment integration.',
+            tech_stack: 'React.js • MongoDB • Express.js • Node.js • Tailwind CSS • Redux • Razorpay',
+            repo: 'https://github.com/kalviumcommunity/S47_Ansh_Capstone_InstruRentals.git',
+            live_demo: 'https://instrurentalss.netlify.app/',
+            image: '/instrurentals.png',
+        },
+        {
+            name: 'Eksodi - CI/CD Deployment Manager',
+            description: 'A lightweight CI/CD deployment manager for Docker, Kubernetes, and cloud VMs.',
+            tech_stack:
+                'Next.js • Tailwind CSS • Node.js • PostgreSQL • Redis • Docker • Kubernetes • GitHub Actions • Prometheus • Grafana',
+            repo: 'https://github.com/Eksodi/Main',
+            live_demo: '/',
+            image: '/eksodi.png',
+        },
+        {
+            name: 'Library Management System',
+            description:
+                'A full-stack system for managing book issuance and tracking returns, with a dashboard UI.',
+            tech_stack: 'Next.js • Express.js • MySQL • Docker • Nginx • Tailwind CSS • AWS EC2 • Github Actions',
+            repo: 'https://github.com/daredevil17052004/LibraryManagementSys.git',
+            live_demo: '/',
+            image: '/lib.png',
+        },
+        {
+            name: 'Personal Neovim',
+            description:
+                'A personal Neovim configuration with plugins and themes for enhanced coding experience.',
+            tech_stack: 'Neovim • Lua • GitHub',
+            repo: 'https://github.com/daredevil17052004/nvim-dotfiles',
+            live_demo: '',
+            image: '/neovim.jpg',
+        },
+    ];
+    // const [projects, setProjects] = useState([]);
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
-        fetch("/projects.json")
-            .then((response) => response.json())
-            .then((data) => setProjects(data))
-            .catch((error) => {
-                console.error("Error fetching projects:", error);
-            });
 
         // Check if device is mobile/touch device
         const checkIsMobile = () => {
@@ -22,7 +72,7 @@ const Projects = () => {
 
         checkIsMobile();
         window.addEventListener('resize', checkIsMobile);
-        
+
         return () => window.removeEventListener('resize', checkIsMobile);
     }, []);
 
@@ -42,7 +92,7 @@ const Projects = () => {
     };
 
     return (
-        <motion.div 
+        <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 px-4 md:px-0"
             variants={containerVariants}
             initial="hidden"
@@ -73,10 +123,10 @@ const Projects = () => {
                                 alt={project?.name}
                                 className="w-full h-full object-cover"
                                 variants={{
-                                    rest: { 
+                                    rest: {
                                         filter: isMobile ? 'blur(8px) brightness(0.5)' : 'blur(4px) brightness(0.8)',
                                     },
-                                    hover: { 
+                                    hover: {
                                         filter: isMobile ? 'blur(8px) brightness(0.5)' : 'blur(8px) brightness(0.2)',
                                     }
                                 }}
@@ -97,9 +147,9 @@ const Projects = () => {
                     <motion.div
                         className="absolute inset-0 z-10 p-4 sm:p-6 flex flex-col justify-between text-white"
                         variants={{
-                            rest: { 
-                                opacity: isMobile ? 1 : 0.8, 
-                                y: isMobile ? 0 : 10 
+                            rest: {
+                                opacity: isMobile ? 1 : 0.8,
+                                y: isMobile ? 0 : 10
                             },
                             hover: { opacity: 1, y: 0 }
                         }}
@@ -107,7 +157,7 @@ const Projects = () => {
                     >
                         {/* Header Content */}
                         <div className="space-y-3">
-                            <motion.h3 
+                            <motion.h3
                                 className="text-lg sm:text-xl lg:text-2xl font-bold text-transparent bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text leading-tight"
                                 variants={{
                                     rest: { scale: 1 },
@@ -116,8 +166,8 @@ const Projects = () => {
                             >
                                 {project?.name}
                             </motion.h3>
-                            
-                            <motion.p 
+
+                            <motion.p
                                 className="text-sm sm:text-base text-gray-200 leading-relaxed line-clamp-3"
                                 variants={{
                                     rest: { opacity: isMobile ? 1 : 0.8 },
@@ -129,7 +179,7 @@ const Projects = () => {
 
                             {/* Technologies */}
                             {project?.technologies?.length > 0 && (
-                                <motion.div 
+                                <motion.div
                                     className="flex flex-wrap gap-1.5 sm:gap-2 mt-3"
                                     variants={{
                                         rest: { opacity: isMobile ? 1 : 0.7 },
@@ -154,7 +204,7 @@ const Projects = () => {
                         </div>
 
                         {/* Footer Actions */}
-                        <motion.div 
+                        <motion.div
                             className="mt-4 space-y-3"
                             variants={{
                                 rest: { opacity: isMobile ? 1 : 0.8, y: isMobile ? 0 : 10 },
@@ -164,7 +214,7 @@ const Projects = () => {
                             <div className="text-xs sm:text-sm text-gray-300 font-medium">
                                 Explore this project:
                             </div>
-                            
+
                             <div className="flex flex-wrap gap-2 sm:gap-3">
                                 {project?.live_demo && (
                                     <motion.a
@@ -181,7 +231,7 @@ const Projects = () => {
                                         </span>
                                     </motion.a>
                                 )}
-                                
+
                                 {project?.repo && (
                                     <motion.a
                                         href={project?.repo}
