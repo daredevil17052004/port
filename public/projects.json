@@ -1,0 +1,57 @@
+[
+    {
+      "name": "Maintainer - A Car Management App",
+      "description": "An app for managing car maintenance records, service history, and reminders. Features include user authentication, service tracking, and analytics dashboard.",
+      "technologies": ["Next.js", "Tailwind CSS", "Node.js", "MongoDB", "Express.js"],
+      "tech_stack": "Next.js • Tailwind CSS • Node.js • Express.js • MongoDB ",
+      "repo": "https://github.com/daredevil17052004/maintainer.git",
+      "live_demo": "https://maintainer-next.netlify.app/",
+      "image": "/maintainer.png"
+    },
+    {
+      "name": "AI Meeting Notes Bot",
+      "description": "A bot that joins meetings, transcribes audio, and generates summarized notes.",
+      "technologies": ["Python", "Selenium", "Whisper AI", "NextJS"  ],
+      "tech_stack": "Python • Selenium • Whisper AI • Gemini API",
+      "repo": "https://github.com/Team-DSA/Notei.git",
+      "live_demo": "https://main-ui-phi.vercel.app/",
+      "image": "/notei.png"
+    },    
+    {
+      "name": "InstruRentals",
+      "description": "An online platform for renting musical instruments with user authentication and payment integration.",
+      "technologies": ["React.js", "MongoDB", "Express.js", "Node.js", "Tailwind CSS", "Redux", "Razorpay"],
+      "tech_stack": "React.js • MongoDB • Express.js • Node.js • Tailwind CSS • Redux • Razorpay",
+      "repo": "https://github.com/kalviumcommunity/S47_Ansh_Capstone_InstruRentals.git",
+      "live_demo": "https://instrurentalss.netlify.app/",
+      "image": "/instrurentals.png"
+    },
+    {
+      "name": "Eksodi - CI/CD Deployment Manager",
+      "description": "A lightweight CI/CD deployment manager for Docker, Kubernetes, and cloud VMs.",
+      "technologies": ["Next.js", "Tailwind CSS", "Node.js", "PostgreSQL", "Redis", "Docker", "Kubernetes", "GitHub Actions", "Prometheus", "Grafana"],
+      "tech_stack": "Next.js • Tailwind CSS • Node.js • PostgreSQL • Redis • Docker • Kubernetes • GitHub Actions • Prometheus • Grafana",
+      "repo": "https://github.com/Eksodi/Main",
+      "live_demo": "/",
+      "image": "/eksodi.png"
+    },
+    {
+      "name": "Library Management System",
+      "description": "A full-stack system for managing book issuance and tracking returns, with a dashboard UI.",
+      "technologies": ["Next.js", "Express.js", "MySQL", "Docker", "Nginx"],
+      "tech_stack": "Next.js • Express.js • MySQL • Docker • Nginx • Tailwind CSS • AWS EC2 • Github Actions",
+      "repo": "https://github.com/daredevil17052004/LibraryManagementSys.git",
+      "live_demo": "/",
+      "image": "/lib.png"
+    },
+    {
+      "name": "Personal Neovim ",
+      "description": "A personal Neovim configuration with plugins and themes for enhanced coding experience.",
+      "technologies": ["Neovim", "Lua", "GitHub"],
+      "tech_stack": "Neovim • Lua • GitHub",
+      "repo": "https://github.com/daredevil17052004/nvim-dotfiles",
+      "live_demo": "",
+      "image": "/neovim.jpg"
+    }
+  ]
+
