@@ -27,6 +27,15 @@
       "image": "/instrurentals.png"
     },
     {
+      "name": "Vamora",
+      "description": "A modern-day matrimonial site for you and your loved one.",
+      "technologies": ["Next.js", "Tailwind CSS"],
+      "tech_stack": "Next.js • Tailwind CSS",
+      "repo": "https://github.com/daredevil17052004/vamora",
+      "live_demo": "https://vamora-psi.vercel.app/",
+      "image": "/vamora.png"
+    },
+    {
       "name": "Eksodi - CI/CD Deployment Manager",
       "description": "A lightweight CI/CD deployment manager for Docker, Kubernetes, and cloud VMs.",
       "technologies": ["Next.js", "Tailwind CSS", "Node.js", "PostgreSQL", "Redis", "Docker", "Kubernetes", "GitHub Actions", "Prometheus", "Grafana"],
