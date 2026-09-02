@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * page.jsx — Exact clone of thegr8binil.me layout with Ansh's details
+ * page.jsx â€” Exact clone of thegr8binil.me layout with Ansh's details
  * Uses: Aceternity UI patterns (Spotlight, Gradient Text, Glow Border)
  *       React-bits patterns (Shiny Text, Marquee)
  *       Exact reference spacing (section-x / section-y)
@@ -12,22 +12,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import NavigationBar from '@/components/NavigationBar';
 import ContactForm from '@/components/ContactForm';
+import Footer from '@/components/Footer';
 import { useGsapReveal } from '@/hooks/useGsapReveal';
 import { useGithubProjects } from '@/hooks/useGithubProjects';
-import {
-  FaReact, FaNodeJs, FaDocker, FaLinux, FaGit,
-} from 'react-icons/fa';
-import {
-  SiNextdotjs, SiPython, SiTypescript, SiMongodb,
-  SiPostgresql, SiTailwindcss, SiRedux, SiExpress,
-  SiJavascript, SiFigma, SiNginx, SiKubernetes,
-} from 'react-icons/si';
+
 import {
   IconBrandGithub,
   IconBrandLinkedin,
   IconBrandDribbble,
-  IconBrandDiscord,
-  IconBrandBehance,
   IconArrowRight,
   IconMail,
   IconTrendingUp,
@@ -37,7 +29,7 @@ import {
 } from '@tabler/icons-react';
 import { GlowingStarsCard } from '@/components/GlowingStarsCard';
 
-// ── Letter reveal ─────────────────────────────────────────────────────────────
+// â”€â”€ Letter reveal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function LetterReveal({ text, color, delay = 0, className = '' }) {
   return (
     <span className={`letter-reveal ${className}`} aria-label={text}>
@@ -54,7 +46,7 @@ function LetterReveal({ text, color, delay = 0, className = '' }) {
   );
 }
 
-// ── Page Loader ───────────────────────────────────────────────────────────────
+// â”€â”€ Page Loader â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function PageLoader({ onDone }) {
   const [progress, setProgress] = useState(0);
 
@@ -96,7 +88,7 @@ function PageLoader({ onDone }) {
   );
 }
 
-// ── Interactive grid background ───────────────────────────────────────────────
+// â”€â”€ Interactive grid background â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function GridBg() {
   const COLS = 22, ROWS = 16;
   return (
@@ -116,58 +108,13 @@ function GridBg() {
   );
 }
 
-// ── Marquee ───────────────────────────────────────────────────────────────────
-const STACK = [
-  { icon: <SiNextdotjs />, label: 'Next.js' },
-  { icon: <SiTailwindcss />, label: 'Tailwind CSS' },
-  { icon: <SiJavascript />, label: 'JavaScript' },
-  { icon: <FaReact />, label: 'React' },
-  { icon: <FaNodeJs />, label: 'Node.js' },
-  { icon: <SiMongodb />, label: 'MongoDB' },
-  { icon: <SiPostgresql />, label: 'PostgreSQL' },
-  { icon: <FaDocker />, label: 'Docker' },
-  { icon: <SiPython />, label: 'Python' },
-  { icon: <SiTypescript />, label: 'TypeScript' },
-  { icon: <SiFigma />, label: 'Figma' },
-  { icon: <FaGit />, label: 'Git' },
-  { icon: <FaLinux />, label: 'Linux' },
-  { icon: <SiRedux />, label: 'Redux' },
-  { icon: <SiNginx />, label: 'Nginx' },
-  { icon: <SiKubernetes />, label: 'Kubernetes' },
-];
-
-function Marquee() {
-  const items = [...STACK, ...STACK];
-  return (
-    <div style={{ overflow: 'hidden', borderTop: '1px solid var(--bline)', borderBottom: '1px solid var(--bline)', padding: '14px 0' }}>
-      <div className="marquee-track">
-        {items.map((item, i) => (
-          <div
-            key={i}
-            style={{
-              display: 'flex', alignItems: 'center', gap: '8px',
-              padding: '0 20px', color: 'var(--sectext)',
-              fontSize: '0.875rem', fontWeight: 500,
-              whiteSpace: 'nowrap', flexShrink: 0,
-              fontFamily: 'var(--font-hanken, system-ui)',
-            }}
-          >
-            <span style={{ fontSize: '1.1rem', opacity: 0.65 }}>{item.icon}</span>
-            {item.label}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ── Divider ───────────────────────────────────────────────────────────────────
+// â”€â”€ Divider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const Divider = () => <div style={{ borderTop: '1px solid var(--bline)' }} />;
 
 
-// ════════════════════════════════════════════════════════════════════════════════
-// HERO — exact layout of reference
-// ════════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// HERO â€” exact layout of reference
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function HeroSection() {
   const heroRef = useRef(null);
 
@@ -182,7 +129,7 @@ function HeroSection() {
         { opacity: 0, y: 16 },
         { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }
       )
-      // Stacked title lines — one by one
+      // Stacked title lines â€” one by one
       .fromTo('[data-hero="line"]',
         { opacity: 0, y: 56 },
         { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', stagger: 0.15 },
@@ -250,7 +197,7 @@ function HeroSection() {
           </span>
         </div>
 
-        {/* Giant stacked titles — GSAP line-by-line */}
+        {/* Giant stacked titles â€” GSAP line-by-line */}
         <div style={{ position: 'relative', lineHeight: 0.92, overflow: 'hidden' }}>
 
           {/* Line 1 */}
@@ -333,7 +280,7 @@ function HeroSection() {
               <Icon size={17} strokeWidth={1.6} />
             </a>
           ))}
-          {/* Let's Connect pill — exact reference */}
+          {/* Let's Connect pill â€” exact reference */}
           <a
             href="#contact"
             style={{
@@ -352,7 +299,7 @@ function HeroSection() {
             Let's Connect
           </a>
           <span style={{ color: 'var(--sectext)', opacity: 0.4, fontSize: '0.8125rem', fontFamily: 'var(--font-hanken, system-ui)' }}>
-            ansharma.dev@gmail.com
+            anshs052004@gmail.com
           </span>
         </div>
       </div>
@@ -361,9 +308,9 @@ function HeroSection() {
 }
 
 
-// ════════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // WHAT I DO
-// ════════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 const WHAT_CARDS = [
   {
     icon: <IconTrendingUp size={24} strokeWidth={2.5} />,
@@ -462,28 +409,28 @@ function WhatIDo() {
 }
 
 
-// ════════════════════════════════════════════════════════════════════════════════
-// SKILLS — numbered rows exactly like reference
-// ════════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// SKILLS â€” numbered rows exactly like reference
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 const SKILLS = [
   {
     num: '01', title: 'Frontend', color: 'var(--accentv)',
-    desc: 'Pixel-perfect, responsive interfaces — components that feel alive and perform at scale.',
+    desc: 'Pixel-perfect, responsive interfaces â€” components that feel alive and perform at scale.',
     tags: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'Redux', 'Framer Motion']
   },
   {
     num: '02', title: 'Backend', color: 'var(--accenty)',
-    desc: 'RESTful APIs, authentication, databases, microservices — production-grade from day one.',
+    desc: 'RESTful APIs, authentication, databases, microservices â€” production-grade from day one.',
     tags: ['Node.js', 'Express', 'Python', 'MongoDB', 'PostgreSQL', 'JWT', 'GraphQL']
   },
   {
     num: '03', title: 'Engineering', color: 'var(--accentc)',
-    desc: 'Containerisation, CI/CD, cloud deployment — shipping reliably and repeatedly.',
+    desc: 'Containerisation, CI/CD, cloud deployment â€” shipping reliably and repeatedly.',
     tags: ['Docker', 'Linux', 'GitHub Actions', 'Nginx', 'AWS EC2', 'Kubernetes']
   },
   {
     num: '04', title: 'AI & Tools', color: 'var(--accentp)',
-    desc: 'Figma, Git workflows, AI-assisted development — moving fast without breaking things.',
+    desc: 'Figma, Git workflows, AI-assisted development â€” moving fast without breaking things.',
     tags: ['Figma', 'Git', 'Neovim', 'Whisper AI', 'Gemini API']
   },
 ];
@@ -531,9 +478,9 @@ function Skills() {
 }
 
 
-// ════════════════════════════════════════════════════════════════════════════════
-// PROJECTS — stat row layout
-// ════════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// PROJECTS â€” stat row layout
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function Projects() {
   const { projects, loading, error } = useGithubProjects('daredevil17052004');
   const featuredProjects = projects.slice(0, 4);
@@ -571,15 +518,15 @@ function Projects() {
             </p>
           </div>
 
-          {/* Tech — hidden on mobile */}
+          {/* Tech â€” hidden on mobile */}
           <p
             className="hidden md:block"
             style={{ flex: '1 1 140px', color: 'var(--sectext)', opacity: 0.38, fontSize: '0.75rem' }}
           >
-            {Array.isArray(p.tech) ? p.tech.join(' · ') : p.tech}
+            {Array.isArray(p.tech) ? p.tech.join(' Â· ') : p.tech}
           </p>
 
-          {/* Metric — Aceternity gradient */}
+          {/* Metric â€” Aceternity gradient */}
           <span style={{ color: p.metricColor, fontSize: '1.125rem', fontWeight: 700, letterSpacing: '-0.02em', fontFamily: 'var(--font-hanken, system-ui)', flexShrink: 0 }}>
             {p.metric}
           </span>
@@ -587,7 +534,7 @@ function Projects() {
           {/* Links */}
           <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
             {p.href && (
-              <a href={p.href} target="_blank" rel="noopener noreferrer" className="btn-pill" style={{ padding: '4px 14px', fontSize: '0.75rem' }}>Live →</a>
+              <a href={p.href} target="_blank" rel="noopener noreferrer" className="btn-pill" style={{ padding: '4px 14px', fontSize: '0.75rem' }}>Live â†’</a>
             )}
             <a href={p.repo} target="_blank" rel="noopener noreferrer" className="btn-pill" style={{ padding: '4px 14px', fontSize: '0.75rem' }}>Code</a>
           </div>
@@ -596,7 +543,7 @@ function Projects() {
 
       <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '36px' }}>
         <Link href="/projects" className="btn-pill" style={{ textDecoration: 'none' }}>
-          View All Projects →
+          View All Projects â†’
         </Link>
       </div>
     </section>
@@ -604,9 +551,9 @@ function Projects() {
 }
 
 
-// ════════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // CONTACT
-// ════════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function Contact() {
   return (
     <section id="contact" className="section-x section-y" style={{ maxWidth: '1400px', margin: '0 auto' }}>
@@ -625,252 +572,15 @@ function Contact() {
 }
 
 
-// ════════════════════════════════════════════════════════════════════════════════
-// FOOTER — exact reference layout
-// ════════════════════════════════════════════════════════════════════════════════
-function Footer() {
-  return (
-    <footer style={{ background: 'var(--background)', borderTop: '1px solid var(--bline)' }}>
-
-      <Marquee />
-
-      {/* ── 4-column footer grid ── */}
-      <div style={{ borderTop: '1px solid var(--bline)' }}>
-        <div className="section-x" style={{
-          paddingTop: '52px', paddingBottom: '52px',
-          maxWidth: '1400px', margin: '0 auto',
-          display: 'grid',
-          gridTemplateColumns: '1.2fr 1fr 1.4fr 1.1fr',
-          gap: '40px',
-          alignItems: 'start',
-        }}>
-
-          {/* Col 1 — Tagline */}
-          <div>
-            <p style={{
-              color: 'var(--primarytext)',
-              fontSize: '1.45rem',
-              fontWeight: 700,
-              letterSpacing: '-0.02em',
-              lineHeight: 1.3,
-              fontFamily: 'var(--font-hanken, system-ui)',
-              maxWidth: '220px',
-            }}>
-              Where <span style={{ color: 'var(--accentp)' }}>aesthetics</span> &amp;{' '}
-              <span style={{ color: 'var(--accentc)' }}>functionality</span> meet
-            </p>
-          </div>
-
-          {/* Col 2 — Explore */}
-          <div>
-            <p style={{
-              fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.02em',
-              color: 'var(--accento)', marginBottom: '18px',
-              fontFamily: 'var(--font-hanken, system-ui)',
-            }}>
-              Explore
-            </p>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[
-                { label: 'Home', href: '#home' },
-                { label: 'Projects', href: '/projects' },
-                { label: 'About Me', href: '#about' },
-                { label: 'Contact', href: '#contact' },
-              ].map(l => (
-                <li key={l.label}>
-                  <a
-                    href={l.href}
-                    style={{
-                      color: 'var(--primarytext)', fontSize: '0.875rem',
-                      fontWeight: 600, opacity: 0.9,
-                      textDecoration: 'none', fontFamily: 'var(--font-hanken, system-ui)',
-                      transition: 'opacity 150ms ease',
-                    }}
-                    onMouseEnter={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = 'var(--accentv)'; }}
-                    onMouseLeave={e => { e.currentTarget.style.opacity = '0.9'; e.currentTarget.style.color = 'var(--primarytext)'; }}
-                  >
-                    {l.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Col 3 — Follow Me (2-column sub-grid with icons) */}
-          <div>
-            <p style={{
-              fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.02em',
-              color: 'var(--accentc)', marginBottom: '18px',
-              fontFamily: 'var(--font-hanken, system-ui)',
-            }}>
-              Follow Me
-            </p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 24px' }}>
-              {[
-                { label: 'LinkedIn',  href: 'https://www.linkedin.com/in/ansh-sharma-44a379280/', bg: '#0A66C2', Icon: IconBrandLinkedin },
-                { label: 'Behance',   href: '#', bg: '#1769FF', Icon: IconBrandBehance },
-                { label: 'Dribbble',  href: '#', bg: '#EA4C89', Icon: IconBrandDribbble },
-                { label: 'Discord',   href: '#', bg: '#5865F2', Icon: IconBrandDiscord },
-                { label: 'Github',    href: 'https://github.com/daredevil17052004', bg: '#333', Icon: IconBrandGithub },
-              ].map(s => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: '8px',
-                    textDecoration: 'none',
-                    transition: 'opacity 150ms ease',
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.opacity = '0.75'; }}
-                  onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}
-                >
-                  <span style={{
-                    width: '24px', height: '24px', borderRadius: '50%',
-                    background: s.bg,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: '#fff',
-                    flexShrink: 0,
-                  }}>
-                    <s.Icon size={14} strokeWidth={2.5} />
-                  </span>
-                  <span style={{
-                    color: 'var(--primarytext)', fontSize: '0.875rem',
-                    fontWeight: 600, opacity: 0.9,
-                    fontFamily: 'var(--font-hanken, system-ui)',
-                  }}>
-                    {s.label}
-                  </span>
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Col 4 — CTA boxes */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-            {[
-              { label: 'Contact Me',    sub: 'Say Hello !',      href: '#contact',  accent: 'var(--accentg)' },
-              { label: 'Case Studies',  sub: 'Explore Studies',  href: '/projects', accent: 'var(--accentg)' },
-            ].map(item => (
-              <a
-                key={item.label}
-                href={item.href}
-                style={{
-                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  padding: '16px 4px',
-                  borderBottom: '1px solid var(--bline)',
-                  textDecoration: 'none',
-                  transition: 'background 150ms ease',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-              >
-                <div>
-                  <p style={{
-                    color: 'var(--primarytext)', fontSize: '0.9375rem',
-                    fontWeight: 700, letterSpacing: '-0.01em', marginBottom: '2px',
-                    fontFamily: 'var(--font-hanken, system-ui)',
-                  }}>
-                    {item.label}
-                  </p>
-                  <p style={{
-                    color: 'var(--sectext)', opacity: 0.45, fontSize: '0.75rem',
-                    fontFamily: 'var(--font-hanken, system-ui)',
-                  }}>
-                    {item.sub}
-                  </p>
-                </div>
-                {/* Arrow in circle */}
-                <span style={{
-                  width: '32px', height: '32px', borderRadius: '50%',
-                  border: `1px solid rgba(255,255,255,0.15)`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: item.accent, flexShrink: 0,
-                  transition: 'border-color 150ms ease',
-                }}>
-                  <IconArrowRight size={16} strokeWidth={2} />
-                </span>
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── Giant clipped name ── */}
-      <div style={{
-        borderTop: '1px solid var(--bline)',
-        overflow: 'hidden',
-        /* Clip to ~72% of text height so letters are cut at the bottom */
-        height: '0.72em',
-        fontSize: 'clamp(5rem, 18vw, 22rem)',
-        lineHeight: 1,
-        /* Push down so the top portion (72%) is visible */
-        display: 'flex',
-        alignItems: 'flex-start',
-      }}>
-        <p style={{
-          fontFamily: 'var(--font-hanken, system-ui)',
-          fontSize: '1em',
-          fontWeight: 900,
-          letterSpacing: '-0.04em',
-          color: 'var(--primarytext)',
-          lineHeight: 1,
-          whiteSpace: 'nowrap',
-          width: '100%',
-          textAlign: 'center',
-          margin: 0,
-          padding: '0 0.5rem',
-          paddingTop: '0.05em',
-        }}>
-          anshsharma
-        </p>
-      </div>
-
-      {/* ── Bottom bar ── */}
-      <div style={{
-        borderTop: '1px solid var(--bline)',
-        padding: '12px 24px',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        gap: '8px',
-      }}>
-        <p style={{
-          color: 'var(--sectext)', opacity: 0.4, fontSize: '0.75rem',
-          fontFamily: 'var(--font-hanken, system-ui)',
-        }}>
-          anshsharma ©2026 - Privacy Policy
-        </p>
-
-        {/* Center orb (toggle-style) */}
-        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '16px' }}>
-          {/* Horizontal line */}
-          <div style={{ position: 'absolute', width: '100%', height: '1px', background: 'rgba(255,255,255,0.15)' }} />
-          {/* Pill */}
-          <div style={{
-            width: '26px', height: '12px', borderRadius: '9999px',
-            background: 'var(--bgcard)', border: '1px solid rgba(255,255,255,0.1)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            position: 'relative', zIndex: 1,
-          }}>
-            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--bviolet)' }} />
-          </div>
-        </div>
-
-        <p style={{
-          color: 'var(--sectext)', opacity: 0.4, fontSize: '0.75rem',
-          fontFamily: 'var(--font-hanken, system-ui)',
-        }}>
-          Bangalore, India
-        </p>
-      </div>
-    </footer>
-  );
-}
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// FOOTER â€” imported from @/components/Footer
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 
-// ════════════════════════════════════════════════════════════════════════════════
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // ROOT
-// ════════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
   useGsapReveal();
