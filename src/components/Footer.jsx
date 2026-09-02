@@ -79,12 +79,12 @@ export default function Footer() {
   ];
 
   return (
-    <footer style={{ background: 'var(--background)', borderTop: '1px solid var(--bline)', overflowX: 'hidden', width: '100%', maxWidth: '100%' }}>
+    <footer style={{ background: 'var(--background)', borderTop: '1px solid var(--bline)', width: '100%' }}>
 
       <Marquee />
 
       {/* ── 4-column footer grid ── */}
-      <div style={{ borderTop: '1px solid var(--bline)', overflowX: 'hidden' }}>
+      <div style={{ borderTop: '1px solid var(--bline)' }}>
         <div className="section-x grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10" style={{
           paddingTop: '52px', paddingBottom: '52px',
           maxWidth: '1400px', margin: '0 auto',

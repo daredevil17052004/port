@@ -534,7 +534,7 @@ export default function ProjectsPage() {
         pointerEvents: 'none', zIndex: 0,
       }} />
 
-      <main style={{ background: 'var(--background)', minHeight: '100vh', position: 'relative', zIndex: 1, overflowX: 'hidden', width: '100%', maxWidth: '100%' }}>
+      <main style={{ background: 'var(--background)', minHeight: '100vh', position: 'relative', zIndex: 1, width: '100%' }}>
 
         {/* ── Page Header ── */}
         <section style={{
