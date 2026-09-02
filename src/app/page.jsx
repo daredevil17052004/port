@@ -88,22 +88,66 @@ function PageLoader({ onDone }) {
   );
 }
 
-// â”€â”€ Interactive grid background â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-function GridBg() {
-  const COLS = 22, ROWS = 16;
+// ── Interactive grid background ──────────────────────────────────────────────
+function GridBg({ containerRef }) {
+  const [dimensions, setDimensions] = useState({ cols: 36, rows: 40 });
+
+  useEffect(() => {
+    const updateGrid = () => {
+      const el = containerRef?.current;
+      const w = window.innerWidth || 1920;
+      const h = el ? el.offsetHeight : 1600;
+      const cols = Math.ceil(w / 64) + 2;
+      const rows = Math.ceil(h / 64) + 2;
+      setDimensions({ cols, rows });
+    };
+
+    updateGrid();
+
+    let resizeObserver;
+    if (typeof ResizeObserver !== 'undefined' && containerRef?.current) {
+      resizeObserver = new ResizeObserver(() => updateGrid());
+      resizeObserver.observe(containerRef.current);
+    }
+
+    window.addEventListener('resize', updateGrid);
+    return () => {
+      window.removeEventListener('resize', updateGrid);
+      if (resizeObserver) resizeObserver.disconnect();
+    };
+  }, [containerRef]);
+
   return (
-    <div className="fixed inset-0 z-0 pointer-events-auto overflow-hidden" aria-hidden="true" style={{ opacity: 0.5 }}>
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: `repeat(${COLS}, 64px)`,
-        gridTemplateRows: `repeat(${ROWS}, 64px)`,
-        width: `${COLS * 64}px`,
-        height: `${ROWS * 64}px`,
-      }}>
-        {Array.from({ length: COLS * ROWS }).map((_, i) => (
+    <div
+      className="absolute inset-0 z-0 pointer-events-auto overflow-hidden blueprint-grid"
+      aria-hidden="true"
+      style={{
+        opacity: 0.55,
+        maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.9) 70%, rgba(0,0,0,0) 98%)',
+        WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.9) 70%, rgba(0,0,0,0) 98%)',
+      }}
+    >
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: `repeat(${dimensions.cols}, 64px)`,
+          gridTemplateRows: `repeat(${dimensions.rows}, 64px)`,
+          width: '100%',
+          height: '100%',
+        }}
+      >
+        {Array.from({ length: dimensions.cols * dimensions.rows }).map((_, i) => (
           <div key={i} className="grid-cell" />
         ))}
       </div>
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(to bottom, transparent 60%, var(--background) 98%)',
+          pointerEvents: 'none',
+        }}
+      />
     </div>
   );
 }
@@ -583,6 +627,7 @@ function Contact() {
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
+  const heroAndWhatIDoRef = useRef(null);
   useGsapReveal();
 
   return (
@@ -592,12 +637,20 @@ export default function Home() {
       </AnimatePresence>
 
       <main style={{ background: 'var(--background)', minHeight: '100vh', position: 'relative' }}>
-        <GridBg />
+        <NavigationBar />
+
+        {/* Hero + What I Do section with Grid Background */}
+        <div ref={heroAndWhatIDoRef} style={{ position: 'relative' }}>
+          <GridBg containerRef={heroAndWhatIDoRef} />
+          <div style={{ position: 'relative', zIndex: 10 }}>
+            <HeroSection />
+            <Divider />
+            <WhatIDo />
+          </div>
+        </div>
+
+        {/* Subsequent sections without background grid */}
         <div style={{ position: 'relative', zIndex: 10 }}>
-          <NavigationBar />
-          <HeroSection />
-          <Divider />
-          <WhatIDo />
           <Divider />
           <Skills />
           <Divider />

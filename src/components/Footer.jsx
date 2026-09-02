@@ -296,7 +296,7 @@ export default function Footer() {
           color: 'var(--sectext)', opacity: 0.4, fontSize: '0.75rem',
           fontFamily: 'var(--font-hanken, system-ui)',
         }}>
-          Bangalore, India
+          Jaipur, India
         </p>
       </div>
     </footer>
