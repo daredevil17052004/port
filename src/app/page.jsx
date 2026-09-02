@@ -1,644 +1,902 @@
 'use client';
 
-import React from 'react';
-import { WobbleCard } from '@/components/ui/wobble-card';
-import Projects from '@/components/Projects';
-import { FaReact, FaCss3Alt, FaJsSquare, FaDocker, FaLinux, FaGithub, FaLinkedin, FaInstagram, FaCode, FaLaptopCode, FaPalette, FaServer } from "react-icons/fa";
-import { SiRedux, SiNextdotjs, SiPython, SiTypescript, SiNodedotjs, SiMongodb, SiPostgresql, SiFigma } from "react-icons/si";
-import { motion } from "framer-motion";
+/**
+ * page.jsx — Exact clone of thegr8binil.me layout with Ansh's details
+ * Uses: Aceternity UI patterns (Spotlight, Gradient Text, Glow Border)
+ *       React-bits patterns (Shiny Text, Marquee)
+ *       Exact reference spacing (section-x / section-y)
+ */
+
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
+import NavigationBar from '@/components/NavigationBar';
 import ContactForm from '@/components/ContactForm';
-import { StarsBackground } from '@/components/ui/stars-background';
+import { useGsapReveal } from '@/hooks/useGsapReveal';
+import { useGithubProjects } from '@/hooks/useGithubProjects';
+import {
+  FaReact, FaNodeJs, FaDocker, FaLinux, FaGit,
+} from 'react-icons/fa';
+import {
+  SiNextdotjs, SiPython, SiTypescript, SiMongodb,
+  SiPostgresql, SiTailwindcss, SiRedux, SiExpress,
+  SiJavascript, SiFigma, SiNginx, SiKubernetes,
+} from 'react-icons/si';
+import {
+  IconBrandGithub,
+  IconBrandLinkedin,
+  IconBrandDribbble,
+  IconBrandDiscord,
+  IconBrandBehance,
+  IconArrowRight,
+  IconMail,
+  IconTrendingUp,
+  IconTools,
+  IconRobot,
+  IconRocket,
+} from '@tabler/icons-react';
+import { GlowingStarsCard } from '@/components/GlowingStarsCard';
 
-// Mobile-friendly Hero Component
-const MobileHeroSection = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.2
-      }
-    }
-  };
+// ── Letter reveal ─────────────────────────────────────────────────────────────
+function LetterReveal({ text, color, delay = 0, className = '' }) {
+  return (
+    <span className={`letter-reveal ${className}`} aria-label={text}>
+      {text.split('').map((ch, i) => (
+        <span
+          key={i}
+          style={{ animationDelay: `${delay + i * 0.038}s`, color: ch === ' ' ? 'transparent' : color }}
+          aria-hidden="true"
+        >
+          {ch === ' ' ? '\u00A0' : ch}
+        </span>
+      ))}
+    </span>
+  );
+}
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    }
-  };
+// ── Page Loader ───────────────────────────────────────────────────────────────
+function PageLoader({ onDone }) {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    let cur = 0;
+    const t = setInterval(() => {
+      cur += Math.random() * 9 + 5;
+      if (cur >= 100) { cur = 100; clearInterval(t); setTimeout(onDone, 280); }
+      setProgress(Math.min(cur, 100));
+    }, 38);
+    return () => clearInterval(t);
+  }, [onDone]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden font-chakra">
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950">
-        <div className="absolute inset-0 bg-gradient-to-t from-cyan-900/20 via-transparent to-purple-900/20"></div>
+    <motion.div
+      className="fixed inset-0 z-[200] flex flex-col items-center justify-center"
+      style={{ background: 'var(--background)' }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.45 }}
+    >
+      <div style={{ width: '160px', marginBottom: '20px' }}>
+        <div style={{ height: '2px', background: 'var(--bline)', borderRadius: '9999px', overflow: 'hidden' }}>
+          <div className="loader-bar" style={{ width: `${progress}%` }} />
+        </div>
       </div>
-
-      {/* Floating elements for visual interest */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.6, 0.3]
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-purple-500/10 rounded-full blur-2xl"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.6, 0.3, 0.6]
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1
-          }}
-        />
-        <motion.div
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-teal-500/10 rounded-full blur-xl"
-          animate={{
-            rotate: 360,
-            scale: [1, 1.1, 1]
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-      </div>
-
-      {/* Main content */}
-      <motion.div
-        className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
+      <p
+        className="tabular-nums"
+        style={{
+          fontFamily: 'var(--font-hanken, system-ui)',
+          fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+          fontWeight: 900,
+          letterSpacing: '-0.04em',
+          color: 'var(--primarytext)',
+        }}
       >
-        {/* Main heading */}
-        <motion.div variants={itemVariants}>
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white leading-tight mb-6">
-            <span className="block">Hi, I'm</span>
-            <span className="block bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
-              Ansh Sharma
-            </span>
-          </h1>
-        </motion.div>
-
-        {/* Subtitle */}
-        <motion.div variants={itemVariants}>
-          <p className="text-xl sm:text-2xl lg:text-3xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-4">
-            Student Developer & Creative Problem Solver
-          </p>
-        </motion.div>
-
-        {/* Description */}
-        <motion.div variants={itemVariants}>
-          <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed mb-8">
-            Building innovative web applications with modern technologies.
-            Passionate about creating user-friendly solutions that make a difference.
-          </p>
-        </motion.div>
-
-        {/* CTA Buttons */}
-        <motion.div
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
-          variants={itemVariants}
-        >
-          <motion.a
-            href="#contact"
-            className="w-full sm:w-auto bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Get In Touch
-          </motion.a>
-          <motion.a
-            href="https://github.com/daredevil17052004"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full sm:w-auto border border-gray-600 hover:border-cyan-500 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:bg-gray-800/50 backdrop-blur-sm"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            View My Work
-          </motion.a>
-        </motion.div>
-
-        {/* Tech stack indicators */}
-        <motion.div
-          className="flex flex-wrap justify-center gap-3 sm:gap-4"
-          variants={itemVariants}
-        >
-          {[
-            { icon: <FaReact />, name: "React", color: "text-blue-400" },
-            { icon: <SiNextdotjs />, name: "Next.js", color: "text-white" },
-            { icon: <FaJsSquare />, name: "JavaScript", color: "text-yellow-400" },
-            { icon: <SiPython />, name: "Python", color: "text-green-400" },
-            { icon: <FaDocker />, name: "Docker", color: "text-blue-500" },
-            { icon: <SiFigma />, name: "Figma", color: "text-pink-500" },
-            { icon: <SiRedux />, name: "Redux", color: "text-purple-500" },
-            { icon: <FaCss3Alt />, name: "TailwindCSS", color: "text-teal-300" },
-            { icon: <FaLinux />, name: "Linux", color: "text-orange-400" }
-          ].map((tech, index) => (
-            <motion.div
-              key={tech.name}
-              className="flex items-center gap-2 bg-slate-800/50 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-full border border-gray-700/50 hover:border-gray-600 transition-all duration-300"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 1.2 + (index * 0.1) }}
-              whileHover={{ scale: 1.05, y: -2 }}
-            >
-              <span className={`${tech.color} text-lg`}>{tech.icon}</span>
-              <span className="text-gray-300 text-sm font-medium">{tech.name}</span>
-            </motion.div>
-          ))}
-        </motion.div>
-      </motion.div>
-
-      {/* Scroll indicator */}
-      {/* <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 2 }}
-      >
-        <div className="flex flex-col items-center">
-          <span className="text-gray-400 text-sm mb-2 font-medium">Scroll Down</span>
-          <motion.div
-            className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center cursor-pointer hover:border-cyan-400 transition-colors"
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <motion.div
-              className="w-1 h-3 bg-gradient-to-b from-cyan-400 to-purple-500 rounded-full mt-2"
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-          </motion.div>
-        </div>
-      </motion.div> */}
-    </section>
+        {Math.round(progress)}
+      </p>
+    </motion.div>
   );
-};
+}
 
-// About Section Component
-const AboutSection = () => {
+// ── Interactive grid background ───────────────────────────────────────────────
+function GridBg() {
+  const COLS = 22, ROWS = 16;
   return (
-    <>
-      <section className="w-full bg-slate-950 py-8 sm:py-12 ">
-        <StarsBackground />
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 px-4 sm:px-6 max-w-8xl mx-auto">
-          <WobbleCard
-            containerClassName="col-span-1 lg:col-span-3 h-auto bg-gradient-to-br from-cyan-900 to-cyan-800 min-h-[300px] sm:min-h-[400px] lg:min-h-[300px]"
-            className="bg-transparent font-chakra"
-          >
-            <div className="p-2 sm:p-2">
-              <h2 className="text-left text-balance text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-[-0.015em] text-gray-900 mb-4">
-                About Myself
-              </h2>
-              <p className="mt-4 max-w-full lg:max-w-[30rem] text-left text-lg sm:text-xl lg:text-2xl text-gray-100 leading-relaxed">
-                I'm a student developer passionate about creating innovative solutions and learning new technologies.
-                Every line of code is an opportunity to solve problems and make a positive impact.
-              </p>
-            </div>
-          </WobbleCard>
-
-          <WobbleCard containerClassName="col-span-1 h-auto min-h-[250px] sm:min-h-[300px] bg-gradient-to-br from-emerald-800 to-emerald-700 font-chakra">
-            <div className="space-y-4 sm:space-y-6 p-4 sm:p-2">
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900">Developer Motto</h2>
-              <p className="text-base sm:text-lg lg:text-xl text-gray-200 leading-relaxed">
-                "Code is not just what I do — it's how I think. Every bug is just a puzzle waiting to be solved."
-              </p>
-            </div>
-          </WobbleCard>
-
-          <WobbleCard containerClassName="col-span-1 lg:col-span-1 bg-gradient-to-br from-sky-800 to-sky-700 h-auto min-h-[300px] sm:min-h-[400px] lg:min-h-[400px] xl:min-h-[500px] font-chakra">
-            <div className="p-2 sm:p-2 space-y-2">
-              <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">My Journey</h3>
-              <p className="text-gray-200 text-base sm:text-lg lg:text-xl leading-relaxed">
-                I'm a passionate student developer at Kalvium, building a strong foundation in web development and software engineering.
-              </p>
-              <p className="text-gray-200 text-base sm:text-lg lg:text-xl leading-relaxed">
-                I focus on creating user-friendly applications with modern technologies like React, Next.js, and Node.js, while continuously improving my problem-solving and technical skills.
-              </p>
-            </div>
-          </WobbleCard>
-
-          {/* Skills Card - Mobile Responsive */}
-          <WobbleCard containerClassName="col-span-1 lg:col-span-3 bg-gradient-to-br from-teal-800 to-teal-700 min-h-[500px] sm:min-h-[600px] font-chakra transition-all hover:scale-[1.01] duration-300 ease-in-out">
-            <div className="flex flex-col items-start h-full p-4 sm:p-6">
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true }}
-              >
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">Technical Skills</h3>
-              </motion.div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-6 mt-4 w-full">
-                {[
-                  { name: "ReactJS", icon: <FaReact />, value: 85, color: "from-cyan-400 via-blue-500 to-purple-500" },
-                  { name: "TailwindCSS", icon: <FaCss3Alt />, value: 80, color: "from-cyan-400 via-blue-500 to-purple-500" },
-                  { name: "JavaScript", icon: <FaJsSquare />, value: 85, color: "from-cyan-400 via-blue-500 to-purple-500" },
-                  { name: "Redux", icon: <SiRedux />, value: 70, color: "from-cyan-400 via-blue-500 to-purple-500" },
-                  { name: "Docker", icon: <FaDocker />, value: 75, color: "from-cyan-400 via-blue-500 to-purple-500" },
-                  { name: "NextJS", icon: <SiNextdotjs />, value: 80, color: "from-cyan-400 via-blue-500 to-purple-500" },
-                  { name: "Python", icon: <SiPython />, value: 75, color: "from-cyan-400 via-blue-500 to-purple-500" },
-                  { name: "Linux", icon: <FaLinux />, value: 70, color: "from-cyan-400 via-blue-500 to-purple-500" }
-                ].map((skill, i) => (
-                  <motion.div
-                    key={i}
-                    className="text-white w-full"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                    viewport={{ once: true }}
-                  >
-                    <div className="flex justify-between mb-2 text-sm sm:text-base font-medium">
-                      <div className="flex items-center gap-3">
-                        <span className="text-xl sm:text-2xl text-black">{skill.icon}</span>
-                        <span className="text-sm sm:text-base font-semibold">{skill.name}</span>
-                      </div>
-                      <span className="text-xs sm:text-sm text-gray-300 font-medium">{skill.value}%</span>
-                    </div>
-                    <div className="w-full bg-slate-700 rounded-full h-2 sm:h-3 overflow-hidden">
-                      <motion.div
-                        className={`h-full bg-gradient-to-r ${skill.color} rounded-full`}
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.value}%` }}
-                        transition={{ duration: 1.5, delay: i * 0.1 }}
-                        viewport={{ once: true }}
-                      />
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </WobbleCard>
-        </div>
-      </section>
-    </>
-  );
-};
-
-// Projects Section Component
-const ProjectsSection = () => {
-  return (
-    <section className="w-full bg-slate-950 text-white font-chakra py-16 sm:py-20 lg:py-28">
-
-      <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-12 sm:mb-16 lg:mb-20"
-        >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-            Featured Projects
-          </h2>
-          <p className="text-gray-400 text-center max-w-3xl mx-auto text-base sm:text-lg lg:text-xl leading-relaxed">
-            A selection of my recent work spanning web applications, design systems, and open source contributions.
-            Each project represents a unique challenge and learning opportunity.
-          </p>
-        </motion.div>
-
-        <motion.div
-          className="mb-12 sm:mb-16 lg:mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          viewport={{ once: true }}
-        >
-          <Projects />
-        </motion.div>
-
-        <motion.div
-          className="text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          viewport={{ once: true }}
-        >
-          <a
-            href="https://github.com/daredevil17052004?tab=repositories&q=&type=source&sort=stargazers"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex w-full sm:w-auto border-2 border-gray-600 hover:border-cyan-500 bg-slate-900/50 hover:bg-slate-800/50 backdrop-blur-sm px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold items-center gap-3 justify-center transition-all duration-300 hover:scale-105 hover:shadow-lg"
-          >
-            <FaGithub className="text-xl" />
-            View All Projects
-          </a>
-        </motion.div>
-      </div>
-    </section>
-  );
-};
-
-// Skills Categories Section Component
-const SkillsCategoriesSection = () => {
-  const skillCategories = [
-    {
-      title: "Frontend Development",
-      icon: <FaLaptopCode />,
-      color: "bg-gradient-to-br from-cyan-600 to-blue-600",
-      skills: [
-        "React & Next.js",
-        "TypeScript & JavaScript",
-        "Tailwind CSS ",
-        "Responsive Design",
-        "State Management (Redux, Context)",
-        "Component Libraries"
-      ]
-    },
-    {
-      title: "Backend Development",
-      icon: <FaCode />,
-      color: "bg-gradient-to-br from-purple-600 to-pink-600",
-      skills: [
-        "Node.js & Express",
-        "RESTful APIs & GraphQL",
-        "MongoDB & PostgreSQL",
-        "Authentication & Security",
-        "Microservices Architecture",
-        "API Integration"
-      ]
-    },
-    {
-      title: "DevOps & Technical Mastery",
-      icon: <FaServer />,
-      color: "bg-gradient-to-br from-blue-700 to-slate-600",
-      skills: [
-        "Docker & Containerization",
-        "CI/CD with GitHub Actions",
-        "Environment Management & .env Handling",
-        "JWT Auth & Role-Based Access",
-        "Logging with Configurable Paths",
-        "Linux & Shell Scripting (zsh, CLI Tools)"
-      ]
-
-    }
-  ];
-
-  return (
-    <section className="w-full bg-slate-950 text-white font-chakra py-16 sm:py-20 lg:py-28">
-      <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-12 sm:mb-16 lg:mb-20"
-        >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-            Expertise Areas
-          </h2>
-          <p className="text-gray-400 max-w-3xl mx-auto text-base sm:text-lg lg:text-xl leading-relaxed">
-            My comprehensive skill set spans across multiple domains of modern web development
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
-          {skillCategories.map((category, index) => (
-            <motion.div
-              key={category.title}
-              className="bg-slate-800 p-6 sm:p-8 rounded-2xl border border-slate-700 hover:border-slate-600 transition-all duration-300 hover:transform hover:scale-105 hover:shadow-2xl"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              viewport={{ once: true }}
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl ${category.color} flex items-center justify-center text-white text-xl sm:text-2xl`}>
-                  {category.icon}
-                </div>
-                <div>
-                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">
-                    {category.title}
-                  </h3>
-                  <div className="w-12 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full mt-2"></div>
-                </div>
-              </div>
-
-              <ul className="space-y-3">
-                {category.skills.map((skill, skillIndex) => (
-                  <motion.li
-                    key={skill}
-                    className="flex items-center gap-3 text-gray-300 text-sm sm:text-base hover:text-white transition-colors"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: (index * 0.2) + (skillIndex * 0.1) }}
-                    viewport={{ once: true }}
-                  >
-                    <div className="w-2 h-2 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex-shrink-0"></div>
-                    {skill}
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// Contact Section Component
-const ContactSection = () => {
-  const socialLinks = [
-    {
-      title: "Connect on Instagram",
-      subtitle: "@heyy.ansh17",
-      url: "https://www.instagram.com/heyy.ansh17/",
-      icon: <FaInstagram />,
-      color: "from-pink-500 to-purple-500"
-    },
-    {
-      title: "Connect on LinkedIn",
-      subtitle: "ansh-sharma-44a379280",
-      url: "https://www.linkedin.com/in/ansh-sharma-44a379280/",
-      icon: <FaLinkedin />,
-      color: "from-blue-600 to-blue-500"
-    }
-  ];
-
-  return (
-    <section id='contact' className="w-full bg-slate-950 text-white font-chakra py-10 sm:py-20 lg:py-28">
-      <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="max-w-4xl mx-auto text-center mb-12 sm:mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-            Let's Work Together
-          </h2>
-          <p className="text-gray-300 text-base sm:text-lg lg:text-xl leading-relaxed max-w-3xl mx-auto">
-            I'm currently available for freelance work and open to discussing new opportunities.
-            Feel free to reach out if you have a project in mind or just want to connect!
-            Let's build something amazing together.
-          </p>
-        </motion.div>
-
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-16 sm:mb-20 max-w-4xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          viewport={{ once: true }}
-        >
-          {socialLinks.map((link, index) => (
-            <motion.a
-              key={link.title}
-              href={link.url}
-              className="bg-slate-900 p-6 sm:p-8 rounded-2xl flex items-center gap-4 hover:bg-slate-800 transition-all duration-300 z-20 border border-slate-800 hover:border-slate-700 hover:transform hover:scale-105 hover:shadow-xl group"
-              target="_blank"
-              rel="noopener noreferrer"
-              title={link.title}
-              initial={{ opacity: 0, x: index === 0 ? -30 : 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 + (index * 0.2) }}
-              viewport={{ once: true }}
-            >
-              <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-r ${link.color} flex items-center justify-center text-white text-xl sm:text-2xl group-hover:scale-110 transition-transform`}>
-                {link.icon}
-              </div>
-              <div className="text-left">
-                <h3 className="font-bold text-base sm:text-lg text-white group-hover:text-cyan-400 transition-colors">
-                  {link.title}
-                </h3>
-                <p className="text-gray-400 text-sm sm:text-base break-all group-hover:text-gray-300 transition-colors">
-                  {link.subtitle}
-                </p>
-              </div>
-            </motion.a>
-          ))}
-        </motion.div>
-      </div>
-    </section>
-  );
-};
-
-// Contact Form Section Component
-const ContactFormSection = () => {
-  return (
-    <section className='w-full flex flex-col items-center justify-center bg-slate-950 py-16 sm:py-20 px-4 sm:px-6'>
-      <motion.div
-        className="text-center mb-12 sm:mb-16"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-      >
-        <h2 className='text-3xl sm:text-4xl lg:text-5xl text-white font-chakra font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent'>
-          Contact Form
-        </h2>
-        <p className="text-gray-400 mt-4 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed">
-          Have a project in mind? Drop me a message and let's discuss how we can bring your ideas to life.
-        </p>
-      </motion.div>
-
-      <motion.div
-        className="w-full max-w-3xl"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        viewport={{ once: true }}
-      >
-        <ContactForm />
-      </motion.div>
-    </section>
-  );
-};
-
-
-const Footer = () => {
-  <div className="bg-slate-950 text-gray-400 py-8 sm:py-12 z-20">
-    <div className="container mx-auto px-4 sm:px-6">
-      <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-        <div className="text-center md:text-left">
-          <p className="font-semibold text-lg sm:text-xl text-white font-chakra">Ansh Sharma</p>
-          <p className='font-chakra text-sm sm:text-base'>© 2025. All rights reserved.</p>
-        </div>
-
-        <div className="flex gap-4 sm:gap-6">
-          <a href="https://github.com/daredevil17052004" aria-label="GitHub" className="hover:text-white text-sm sm:text-base">
-            GitHub
-          </a>
-          <a href="https://www.linkedin.com/in/ansh-sharma-44a379280/" aria-label="LinkedIn" className="hover:text-white text-sm sm:text-base">
-            LinkedIn
-          </a>
-          <a href="https://www.instagram.com/heyy.ansh17/" aria-label="Instagram" className="hover:text-white text-sm sm:text-base">
-            Instagram
-          </a>
-        </div>
+    <div className="fixed inset-0 z-0 pointer-events-auto overflow-hidden" aria-hidden="true" style={{ opacity: 0.5 }}>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: `repeat(${COLS}, 64px)`,
+        gridTemplateRows: `repeat(${ROWS}, 64px)`,
+        width: `${COLS * 64}px`,
+        height: `${ROWS * 64}px`,
+      }}>
+        {Array.from({ length: COLS * ROWS }).map((_, i) => (
+          <div key={i} className="grid-cell" />
+        ))}
       </div>
     </div>
-  </div>
+  );
+}
 
-};
+// ── Marquee ───────────────────────────────────────────────────────────────────
+const STACK = [
+  { icon: <SiNextdotjs />, label: 'Next.js' },
+  { icon: <SiTailwindcss />, label: 'Tailwind CSS' },
+  { icon: <SiJavascript />, label: 'JavaScript' },
+  { icon: <FaReact />, label: 'React' },
+  { icon: <FaNodeJs />, label: 'Node.js' },
+  { icon: <SiMongodb />, label: 'MongoDB' },
+  { icon: <SiPostgresql />, label: 'PostgreSQL' },
+  { icon: <FaDocker />, label: 'Docker' },
+  { icon: <SiPython />, label: 'Python' },
+  { icon: <SiTypescript />, label: 'TypeScript' },
+  { icon: <SiFigma />, label: 'Figma' },
+  { icon: <FaGit />, label: 'Git' },
+  { icon: <FaLinux />, label: 'Linux' },
+  { icon: <SiRedux />, label: 'Redux' },
+  { icon: <SiNginx />, label: 'Nginx' },
+  { icon: <SiKubernetes />, label: 'Kubernetes' },
+];
 
-export default function Home() {
+function Marquee() {
+  const items = [...STACK, ...STACK];
   return (
-    <main className="bg-slate-950 relative overflow-hidden">
-      <div className="absolute inset-0 z-0">
-        <StarsBackground />
+    <div style={{ overflow: 'hidden', borderTop: '1px solid var(--bline)', borderBottom: '1px solid var(--bline)', padding: '14px 0' }}>
+      <div className="marquee-track">
+        {items.map((item, i) => (
+          <div
+            key={i}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              padding: '0 20px', color: 'var(--sectext)',
+              fontSize: '0.875rem', fontWeight: 500,
+              whiteSpace: 'nowrap', flexShrink: 0,
+              fontFamily: 'var(--font-hanken, system-ui)',
+            }}
+          >
+            <span style={{ fontSize: '1.1rem', opacity: 0.65 }}>{item.icon}</span>
+            {item.label}
+          </div>
+        ))}
       </div>
-      <MobileHeroSection />
-      <AboutSection />
-      <ProjectsSection />
-      <SkillsCategoriesSection />
-      <ContactSection />
-      <ContactFormSection />
-      <div className="bg-slate-950 text-gray-400 py-8 sm:py-12 z-20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-center md:text-left">
-              <p className="font-semibold text-lg sm:text-xl text-white font-chakra">Ansh Sharma</p>
-              <p className='font-chakra text-sm sm:text-base'>© 2025. All rights reserved.</p>
+    </div>
+  );
+}
+
+// ── Divider ───────────────────────────────────────────────────────────────────
+const Divider = () => <div style={{ borderTop: '1px solid var(--bline)' }} />;
+
+
+// ════════════════════════════════════════════════════════════════════════════════
+// HERO — exact layout of reference
+// ════════════════════════════════════════════════════════════════════════════════
+function HeroSection() {
+  const heroRef = useRef(null);
+
+  useEffect(() => {
+    let gsap;
+    import('gsap').then(mod => {
+      gsap = mod.gsap || mod.default;
+      if (!heroRef.current) return;
+      const tl = gsap.timeline({ delay: 0.3 });
+      // Avatar badge
+      tl.fromTo('[data-hero="badge"]',
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }
+      )
+      // Stacked title lines — one by one
+      .fromTo('[data-hero="line"]',
+        { opacity: 0, y: 56 },
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', stagger: 0.15 },
+        '-=0.2'
+      )
+      // Tagline
+      .fromTo('[data-hero="tagline"]',
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+        '-=0.15'
+      )
+      // Socials row
+      .fromTo('[data-hero="socials"]',
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' },
+        '-=0.1'
+      );
+    });
+  }, []);
+
+  return (
+    <section
+      id="home"
+      ref={heroRef}
+      style={{
+        minHeight: '100svh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+        paddingTop: '80px',
+        paddingBottom: '80px',
+      }}
+    >
+      {/* Aceternity Spotlight */}
+      <div className="spotlight" aria-hidden="true" />
+
+      <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '0 24px', maxWidth: '900px', width: '100%', margin: '0 auto' }}>
+
+        {/* Avatar pill */}
+        <div
+          data-hero="badge"
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '28px', opacity: 0 }}
+        >
+          {/* Avatar image */}
+          <img
+            src="/logo.jpg"
+            alt="Ansh"
+            style={{
+              width: '40px', height: '40px', borderRadius: '50%',
+              objectFit: 'cover', flexShrink: 0, display: 'block',
+              border: '1px solid var(--bline)'
+            }}
+          />
+          <span style={{
+            padding: '6px 16px', borderRadius: '9999px',
+            border: '1px solid var(--bline)',
+            color: 'var(--sectext)', fontSize: '0.8125rem',
+            background: 'rgba(255,255,255,0.03)',
+            fontFamily: 'var(--font-hanken, system-ui)',
+          }}>
+            Hello, I'm Ansh
+          </span>
+        </div>
+
+        {/* Giant stacked titles — GSAP line-by-line */}
+        <div style={{ position: 'relative', lineHeight: 0.92, overflow: 'hidden' }}>
+
+          {/* Line 1 */}
+          <div data-hero="line" style={{ position: 'relative', marginBottom: '4px', opacity: 0 }}>
+            <span className="code-comment" style={{ position: 'absolute', right: '-10px', top: '6px' }}>
+              // Based in India
+            </span>
+            <h1 className="text-display block" style={{ color: 'var(--accentv)' }}>
+              FULL-STACK
+            </h1>
+          </div>
+
+          {/* Line 2 */}
+          <div data-hero="line" style={{ position: 'relative', marginBottom: '4px', opacity: 0 }}>
+            <h1 className="text-display block" style={{ color: 'var(--accenty)' }}>
+              DEVELOPER
+            </h1>
+          </div>
+
+          {/* Line 3 */}
+          <div data-hero="line" style={{ position: 'relative', opacity: 0 }}>
+            <span className="code-comment" style={{ position: 'absolute', left: '-10px', bottom: '0' }}>
+              // Code. Build. Ship.
+            </span>
+            <h1 className="text-display block" style={{ color: 'var(--primarytext)' }}>
+              &amp; <span style={{ color: 'var(--accentc)' }}>BUILDER</span>
+            </h1>
+          </div>
+        </div>
+
+        {/* Tagline */}
+        <p
+          data-hero="tagline"
+          style={{
+            maxWidth: '520px', margin: '28px auto 0',
+            color: 'var(--primarytext)',
+            fontFamily: 'var(--font-hanken, system-ui)',
+            fontSize: 'clamp(0.9375rem, 1.5vw, 1.0625rem)',
+            lineHeight: 1.55, letterSpacing: '-0.005em',
+            opacity: 0,
+          }}
+        >
+          I create digital experiences that border on{' '}
+          <span style={{ color: 'var(--accentv)' }}>efficiency</span>,{' '}
+          <span style={{ color: 'var(--accenty)' }}>aesthetics</span>{' '}
+          and{' '}
+          <span style={{ color: 'var(--accentc)' }}>functionality</span>.
+        </p>
+
+        {/* Social row */}
+        <div
+          data-hero="socials"
+          style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            gap: '6px', marginTop: '36px', flexWrap: 'wrap',
+            opacity: 0,
+          }}
+        >
+          {[
+            { href: 'https://github.com/daredevil17052004', Icon: IconBrandGithub, label: 'GitHub' },
+            { href: 'https://www.linkedin.com/in/ansh-sharma-44a379280/', Icon: IconBrandLinkedin, label: 'LinkedIn' },
+            { href: 'https://www.instagram.com/heyy.ansh17/', Icon: IconBrandDribbble, label: 'Instagram' },
+          ].map(({ href, Icon, label }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              style={{
+                width: '38px', height: '38px', borderRadius: '50%',
+                border: '1px solid var(--bline)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: 'var(--sectext)', textDecoration: 'none',
+                transition: 'color 150ms ease, border-color 150ms ease',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.color = 'var(--accentb)'; e.currentTarget.style.borderColor = 'var(--accentb)'; }}
+              onMouseLeave={e => { e.currentTarget.style.color = 'var(--sectext)'; e.currentTarget.style.borderColor = 'var(--bline)'; }}
+            >
+              <Icon size={17} strokeWidth={1.6} />
+            </a>
+          ))}
+          {/* Let's Connect pill — exact reference */}
+          <a
+            href="#contact"
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              padding: '8px 20px', borderRadius: '9999px',
+              border: '1px solid var(--bline)',
+              color: 'var(--primarytext)', fontSize: '0.8125rem',
+              fontWeight: 600, textDecoration: 'none',
+              fontFamily: 'var(--font-hanken, system-ui)', letterSpacing: '-0.005em',
+              transition: 'border-color 150ms ease',
+            }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accentg)'}
+            onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--bline)'}
+          >
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accentg)', animation: 'pulse 2s infinite', flexShrink: 0 }} />
+            Let's Connect
+          </a>
+          <span style={{ color: 'var(--sectext)', opacity: 0.4, fontSize: '0.8125rem', fontFamily: 'var(--font-hanken, system-ui)' }}>
+            ansharma.dev@gmail.com
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════════
+// WHAT I DO
+// ════════════════════════════════════════════════════════════════════════════════
+const WHAT_CARDS = [
+  {
+    icon: <IconTrendingUp size={24} strokeWidth={2.5} />,
+    color: '#9d95ff', // var(--bviolet)
+    title: 'Product Management',
+    desc: 'Driving product strategy, customer discovery, roadmap planning, prioritization, and cross-functional execution.'
+  },
+  {
+    icon: <IconTools size={24} strokeWidth={2.5} />,
+    color: 'var(--accentc)',
+    title: 'UX & Product Design',
+    desc: 'Creating user-centered experiences through research, interaction design, prototyping, and scalable design systems.'
+  },
+  {
+    icon: <IconRobot size={24} strokeWidth={2.5} />,
+    color: '#f4a6da', // soft pink
+    title: 'AI & Automation',
+    desc: 'Building AI-native experiences using LLMs, intelligent workflows, prompt engineering, and automation.'
+  },
+  {
+    icon: <IconRocket size={24} strokeWidth={2.5} />,
+    color: '#ff8709', // var(--accento)
+    title: 'Technical Product',
+    desc: 'Collaborating with engineering, leveraging modern technologies, and shipping products from Idea to launch.'
+  },
+];
+
+function WhatIDo() {
+  return (
+    <section id="whatido" className="section-x section-y" style={{ maxWidth: '1400px', margin: '0 auto', paddingTop: '80px', paddingBottom: '80px' }}>
+      
+      {/* Header row: Centered title with absolute right button */}
+      <div style={{
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: '64px',
+      }}>
+        <h2 style={{
+          color: 'var(--accentv)',
+          fontSize: '1.5rem',
+          fontWeight: 600,
+          letterSpacing: '0.04em',
+          textTransform: 'uppercase',
+          fontFamily: 'var(--font-hanken, system-ui)',
+        }}>
+          WHAT I DO
+        </h2>
+        
+        {/* About Me link */}
+        <div style={{ position: 'absolute', right: 0 }}>
+          <a
+            href="#about"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '8px',
+              padding: '10px 24px', borderRadius: '9999px',
+              border: '1px solid var(--bline)',
+              color: 'var(--primarytext)', fontSize: '0.9375rem', fontWeight: 600,
+              fontFamily: 'var(--font-hanken, system-ui)',
+              letterSpacing: '-0.01em', textDecoration: 'none', background: 'transparent',
+              transition: 'border-color 150ms ease, background 150ms ease',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = 'var(--primarytext)';
+              e.currentTarget.style.background = 'rgba(255,255,227,0.06)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = 'var(--bline)';
+              e.currentTarget.style.background = 'transparent';
+            }}
+          >
+            About Me <IconArrowRight size={16} strokeWidth={2} />
+          </a>
+        </div>
+      </div>
+
+      {/* 4-card grid with Aceternity-style GlowingStarsCard */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+        gap: '20px'
+      }}>
+        {WHAT_CARDS.map((card, i) => (
+          <GlowingStarsCard
+            key={card.title}
+            title={card.title}
+            description={card.desc}
+            icon={card.icon}
+            iconColor={card.color}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════════
+// SKILLS — numbered rows exactly like reference
+// ════════════════════════════════════════════════════════════════════════════════
+const SKILLS = [
+  {
+    num: '01', title: 'Frontend', color: 'var(--accentv)',
+    desc: 'Pixel-perfect, responsive interfaces — components that feel alive and perform at scale.',
+    tags: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'Redux', 'Framer Motion']
+  },
+  {
+    num: '02', title: 'Backend', color: 'var(--accenty)',
+    desc: 'RESTful APIs, authentication, databases, microservices — production-grade from day one.',
+    tags: ['Node.js', 'Express', 'Python', 'MongoDB', 'PostgreSQL', 'JWT', 'GraphQL']
+  },
+  {
+    num: '03', title: 'Engineering', color: 'var(--accentc)',
+    desc: 'Containerisation, CI/CD, cloud deployment — shipping reliably and repeatedly.',
+    tags: ['Docker', 'Linux', 'GitHub Actions', 'Nginx', 'AWS EC2', 'Kubernetes']
+  },
+  {
+    num: '04', title: 'AI & Tools', color: 'var(--accentp)',
+    desc: 'Figma, Git workflows, AI-assisted development — moving fast without breaking things.',
+    tags: ['Figma', 'Git', 'Neovim', 'Whisper AI', 'Gemini API']
+  },
+];
+
+function Skills() {
+  return (
+    <section id="skills" className="section-x section-y" style={{ maxWidth: '1400px', margin: '0 auto' }}>
+      <div style={{ marginBottom: '32px' }}>
+        <p className="code-comment" style={{ marginBottom: '6px' }}>// expertise</p>
+        <h2 className="text-headline gradient-text-yc">Experience &amp; skills.</h2>
+      </div>
+
+      <div>
+        {SKILLS.map((skill, i) => (
+          <div
+            key={skill.title}
+            className="skill-row"
+          >
+            {/* Number + big title */}
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
+              <span className="code-comment">{skill.num}</span>
+              <span
+                className="text-skill-title shiny-text"
+                style={{ color: skill.color }}
+              >
+                {skill.title}
+              </span>
             </div>
 
-            <div className="flex gap-4 sm:gap-6">
-              <a href="https://github.com/daredevil17052004" aria-label="GitHub" className="hover:text-white text-sm sm:text-base z-20"
-                            target="_blank"
-              rel="noopener noreferrer"
->
-                GitHub
-              </a>
-              <a href="https://www.linkedin.com/in/ansh-sharma-44a379280/" aria-label="LinkedIn" className="hover:text-white text-sm sm:text-base z-20"
-                            target="_blank"
-              rel="noopener noreferrer"
->
-                LinkedIn
-              </a>
-              <a href="https://www.instagram.com/heyy.ansh17/" aria-label="Instagram" className="hover:text-white text-sm sm:text-base z-20"
-                            target="_blank"
-              rel="noopener noreferrer"
->        
-                Instagram
-              </a>
+            {/* Description */}
+            <p style={{ color: 'var(--sectext)', opacity: 0.65, fontSize: '0.9rem', lineHeight: 1.65, paddingTop: '4px' }}>
+              {skill.desc}
+            </p>
+
+            {/* Tag chips */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', paddingTop: '4px' }}>
+              {skill.tags.map(t => <span key={t} className="tag-chip">{t}</span>)}
             </div>
+          </div>
+        ))}
+        <Divider />
+      </div>
+    </section>
+  );
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════════
+// PROJECTS — stat row layout
+// ════════════════════════════════════════════════════════════════════════════════
+function Projects() {
+  const { projects, loading, error } = useGithubProjects('daredevil17052004');
+  const featuredProjects = projects.slice(0, 4);
+
+  return (
+    <section id="projects" className="section-x section-y" style={{ maxWidth: '1400px', margin: '0 auto' }}>
+      <div style={{ marginBottom: '12px' }}>
+        <p className="code-comment" style={{ marginBottom: '6px' }}>// selected work</p>
+        <h2 className="text-headline gradient-text-vp">My Projects</h2>
+      </div>
+
+      <Divider />
+
+      {loading ? (
+        <div style={{ padding: '40px', color: 'var(--sectext)', textAlign: 'center' }}>
+          Fetching from GitHub...
+        </div>
+      ) : error ? (
+        <div style={{ padding: '40px', color: 'var(--accento)', textAlign: 'center' }}>
+          Error fetching projects: {error}
+        </div>
+      ) : (
+        featuredProjects.map((p, i) => (
+        <div
+          key={p.name}
+          className="stat-row"
+        >
+          {/* Left */}
+          <div style={{ flex: '1 1 160px', minWidth: 0 }}>
+            <p style={{ color: 'var(--primarytext)', fontSize: '0.9375rem', fontWeight: 600, letterSpacing: '-0.01em', marginBottom: '3px', fontFamily: 'var(--font-hanken, system-ui)' }}>
+              {p.name}
+            </p>
+            <p style={{ color: 'var(--sectext)', opacity: 0.45, fontSize: '0.75rem' }}>
+              {p.role}
+            </p>
+          </div>
+
+          {/* Tech — hidden on mobile */}
+          <p
+            className="hidden md:block"
+            style={{ flex: '1 1 140px', color: 'var(--sectext)', opacity: 0.38, fontSize: '0.75rem' }}
+          >
+            {Array.isArray(p.tech) ? p.tech.join(' · ') : p.tech}
+          </p>
+
+          {/* Metric — Aceternity gradient */}
+          <span style={{ color: p.metricColor, fontSize: '1.125rem', fontWeight: 700, letterSpacing: '-0.02em', fontFamily: 'var(--font-hanken, system-ui)', flexShrink: 0 }}>
+            {p.metric}
+          </span>
+
+          {/* Links */}
+          <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
+            {p.href && (
+              <a href={p.href} target="_blank" rel="noopener noreferrer" className="btn-pill" style={{ padding: '4px 14px', fontSize: '0.75rem' }}>Live →</a>
+            )}
+            <a href={p.repo} target="_blank" rel="noopener noreferrer" className="btn-pill" style={{ padding: '4px 14px', fontSize: '0.75rem' }}>Code</a>
+          </div>
+        </div>
+      )))}
+
+      <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '36px' }}>
+        <Link href="/projects" className="btn-pill" style={{ textDecoration: 'none' }}>
+          View All Projects →
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════════
+// CONTACT
+// ════════════════════════════════════════════════════════════════════════════════
+function Contact() {
+  return (
+    <section id="contact" className="section-x section-y" style={{ maxWidth: '1400px', margin: '0 auto' }}>
+      <div style={{ marginBottom: '32px' }}>
+        <p className="code-comment" style={{ marginBottom: '6px' }}>// get in touch</p>
+        <h2 className="text-headline gradient-text-cv">Let's Work Together</h2>
+        <p style={{ color: 'var(--sectext)', opacity: 0.65, fontSize: '0.875rem', marginTop: '10px', maxWidth: '400px', lineHeight: 1.65 }}>
+          Available for freelance work and new opportunities. Have a project in mind? Let's talk.
+        </p>
+      </div>
+      <div className="scroll-reveal">
+        <ContactForm />
+      </div>
+    </section>
+  );
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════════
+// FOOTER — exact reference layout
+// ════════════════════════════════════════════════════════════════════════════════
+function Footer() {
+  return (
+    <footer style={{ background: 'var(--background)', borderTop: '1px solid var(--bline)' }}>
+
+      <Marquee />
+
+      {/* ── 4-column footer grid ── */}
+      <div style={{ borderTop: '1px solid var(--bline)' }}>
+        <div className="section-x" style={{
+          paddingTop: '52px', paddingBottom: '52px',
+          maxWidth: '1400px', margin: '0 auto',
+          display: 'grid',
+          gridTemplateColumns: '1.2fr 1fr 1.4fr 1.1fr',
+          gap: '40px',
+          alignItems: 'start',
+        }}>
+
+          {/* Col 1 — Tagline */}
+          <div>
+            <p style={{
+              color: 'var(--primarytext)',
+              fontSize: '1.45rem',
+              fontWeight: 700,
+              letterSpacing: '-0.02em',
+              lineHeight: 1.3,
+              fontFamily: 'var(--font-hanken, system-ui)',
+              maxWidth: '220px',
+            }}>
+              Where <span style={{ color: 'var(--accentp)' }}>aesthetics</span> &amp;{' '}
+              <span style={{ color: 'var(--accentc)' }}>functionality</span> meet
+            </p>
+          </div>
+
+          {/* Col 2 — Explore */}
+          <div>
+            <p style={{
+              fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.02em',
+              color: 'var(--accento)', marginBottom: '18px',
+              fontFamily: 'var(--font-hanken, system-ui)',
+            }}>
+              Explore
+            </p>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {[
+                { label: 'Home', href: '#home' },
+                { label: 'Projects', href: '/projects' },
+                { label: 'About Me', href: '#about' },
+                { label: 'Contact', href: '#contact' },
+              ].map(l => (
+                <li key={l.label}>
+                  <a
+                    href={l.href}
+                    style={{
+                      color: 'var(--primarytext)', fontSize: '0.875rem',
+                      fontWeight: 600, opacity: 0.9,
+                      textDecoration: 'none', fontFamily: 'var(--font-hanken, system-ui)',
+                      transition: 'opacity 150ms ease',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.color = 'var(--accentv)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.opacity = '0.9'; e.currentTarget.style.color = 'var(--primarytext)'; }}
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Col 3 — Follow Me (2-column sub-grid with icons) */}
+          <div>
+            <p style={{
+              fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.02em',
+              color: 'var(--accentc)', marginBottom: '18px',
+              fontFamily: 'var(--font-hanken, system-ui)',
+            }}>
+              Follow Me
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 24px' }}>
+              {[
+                { label: 'LinkedIn',  href: 'https://www.linkedin.com/in/ansh-sharma-44a379280/', bg: '#0A66C2', Icon: IconBrandLinkedin },
+                { label: 'Behance',   href: '#', bg: '#1769FF', Icon: IconBrandBehance },
+                { label: 'Dribbble',  href: '#', bg: '#EA4C89', Icon: IconBrandDribbble },
+                { label: 'Discord',   href: '#', bg: '#5865F2', Icon: IconBrandDiscord },
+                { label: 'Github',    href: 'https://github.com/daredevil17052004', bg: '#333', Icon: IconBrandGithub },
+              ].map(s => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '8px',
+                    textDecoration: 'none',
+                    transition: 'opacity 150ms ease',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.opacity = '0.75'; }}
+                  onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}
+                >
+                  <span style={{
+                    width: '24px', height: '24px', borderRadius: '50%',
+                    background: s.bg,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: '#fff',
+                    flexShrink: 0,
+                  }}>
+                    <s.Icon size={14} strokeWidth={2.5} />
+                  </span>
+                  <span style={{
+                    color: 'var(--primarytext)', fontSize: '0.875rem',
+                    fontWeight: 600, opacity: 0.9,
+                    fontFamily: 'var(--font-hanken, system-ui)',
+                  }}>
+                    {s.label}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Col 4 — CTA boxes */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            {[
+              { label: 'Contact Me',    sub: 'Say Hello !',      href: '#contact',  accent: 'var(--accentg)' },
+              { label: 'Case Studies',  sub: 'Explore Studies',  href: '/projects', accent: 'var(--accentg)' },
+            ].map(item => (
+              <a
+                key={item.label}
+                href={item.href}
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '16px 4px',
+                  borderBottom: '1px solid var(--bline)',
+                  textDecoration: 'none',
+                  transition: 'background 150ms ease',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+              >
+                <div>
+                  <p style={{
+                    color: 'var(--primarytext)', fontSize: '0.9375rem',
+                    fontWeight: 700, letterSpacing: '-0.01em', marginBottom: '2px',
+                    fontFamily: 'var(--font-hanken, system-ui)',
+                  }}>
+                    {item.label}
+                  </p>
+                  <p style={{
+                    color: 'var(--sectext)', opacity: 0.45, fontSize: '0.75rem',
+                    fontFamily: 'var(--font-hanken, system-ui)',
+                  }}>
+                    {item.sub}
+                  </p>
+                </div>
+                {/* Arrow in circle */}
+                <span style={{
+                  width: '32px', height: '32px', borderRadius: '50%',
+                  border: `1px solid rgba(255,255,255,0.15)`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: item.accent, flexShrink: 0,
+                  transition: 'border-color 150ms ease',
+                }}>
+                  <IconArrowRight size={16} strokeWidth={2} />
+                </span>
+              </a>
+            ))}
           </div>
         </div>
       </div>
-    </main>
+
+      {/* ── Giant clipped name ── */}
+      <div style={{
+        borderTop: '1px solid var(--bline)',
+        overflow: 'hidden',
+        /* Clip to ~72% of text height so letters are cut at the bottom */
+        height: '0.72em',
+        fontSize: 'clamp(5rem, 18vw, 22rem)',
+        lineHeight: 1,
+        /* Push down so the top portion (72%) is visible */
+        display: 'flex',
+        alignItems: 'flex-start',
+      }}>
+        <p style={{
+          fontFamily: 'var(--font-hanken, system-ui)',
+          fontSize: '1em',
+          fontWeight: 900,
+          letterSpacing: '-0.04em',
+          color: 'var(--primarytext)',
+          lineHeight: 1,
+          whiteSpace: 'nowrap',
+          width: '100%',
+          textAlign: 'center',
+          margin: 0,
+          padding: '0 0.5rem',
+          paddingTop: '0.05em',
+        }}>
+          anshsharma
+        </p>
+      </div>
+
+      {/* ── Bottom bar ── */}
+      <div style={{
+        borderTop: '1px solid var(--bline)',
+        padding: '12px 24px',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        gap: '8px',
+      }}>
+        <p style={{
+          color: 'var(--sectext)', opacity: 0.4, fontSize: '0.75rem',
+          fontFamily: 'var(--font-hanken, system-ui)',
+        }}>
+          anshsharma ©2026 - Privacy Policy
+        </p>
+
+        {/* Center orb (toggle-style) */}
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '16px' }}>
+          {/* Horizontal line */}
+          <div style={{ position: 'absolute', width: '100%', height: '1px', background: 'rgba(255,255,255,0.15)' }} />
+          {/* Pill */}
+          <div style={{
+            width: '26px', height: '12px', borderRadius: '9999px',
+            background: 'var(--bgcard)', border: '1px solid rgba(255,255,255,0.1)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            position: 'relative', zIndex: 1,
+          }}>
+            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--bviolet)' }} />
+          </div>
+        </div>
+
+        <p style={{
+          color: 'var(--sectext)', opacity: 0.4, fontSize: '0.75rem',
+          fontFamily: 'var(--font-hanken, system-ui)',
+        }}>
+          Bangalore, India
+        </p>
+      </div>
+    </footer>
   );
-};
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════════
+// ROOT
+// ════════════════════════════════════════════════════════════════════════════════
+export default function Home() {
+  const [loaded, setLoaded] = useState(false);
+  useGsapReveal();
+
+  return (
+    <>
+      <AnimatePresence>
+        {!loaded && <PageLoader key="loader" onDone={() => setLoaded(true)} />}
+      </AnimatePresence>
+
+      <main style={{ background: 'var(--background)', minHeight: '100vh', position: 'relative' }}>
+        <GridBg />
+        <div style={{ position: 'relative', zIndex: 10 }}>
+          <NavigationBar />
+          <HeroSection />
+          <Divider />
+          <WhatIDo />
+          <Divider />
+          <Skills />
+          <Divider />
+          <Projects />
+          <Divider />
+          <Contact />
+          <Footer />
+        </div>
+      </main>
+    </>
+  );
+}

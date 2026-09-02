@@ -2,48 +2,540 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─────────────────────────────────────────────────────
+   Exact token values extracted from thegr8binil.me CSS
+   ───────────────────────────────────────────────────── */
+:root {
+  /* backgrounds */
+  --background: #0e100f;
+  --bgcard: #191917;
 
+  /* text */
+  --primarytext: #ffffe3;
+  --sectext: #d1d1d1;
+  --dimtext: #454533;
 
-@layer base {
-  :root {
-    --text: #00000;
-    --background: #f9fcf8;
-    --primary: #63ba5e;
-    --secondary: #a3d7ca;
-    --accent: #7bc0c6;
-    --glitch1: #2b4539;
-    --glitch2: #61dca3;
-    --glitch3: #61b3dc;
-  }
-  .dark {
-    --text: #e7f4e6;
-    --background: #040703;
-    --primary: #49a145;
-    --secondary: #285c50;
-    --accent: #397e84;
-    --glitch1: #d8efe3;
-    --glitch2: #7ae6b7;
-    --glitch3: #7ac4e6;
-  }
+  /* borders */
+  --bline: #323228;
+
+  /* accents */
+  --accentv: #a374ff;
+  /* violet  */
+  --accenty: #ffd074;
+  /* amber   */
+  --accentc: #17f1d1;
+  /* cyan    */
+  --accentp: #ee46d3;
+  /* pink    */
+  --accentb: #18a0fb;
+  /* blue    */
+  --accentg: #0ae448;
+  /* green   */
+  --accento: #ff8709;
+  /* orange  */
+
+  /* alias colors used in reference site */
+  --bviolet: #9d95ff;
+  --bblue: #00bad5;
+  --bpink: #fec5fb;
+  --bgreen: #0ae448;
+  --borange: #ff8709;
 }
 
+/* ── Base ────────────────────────────────────────────── */
 @layer base {
   html {
-    @apply transition-colors duration-300;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-optical-sizing: auto;
+    scroll-behavior: smooth;
   }
-  
+
   body {
-    @apply bg-background text-text; /* Ensure these variables exist */
-    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: var(--background);
+    color: var(--primarytext);
+    font-family: var(--font-hanken, 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif);
+    font-size: 1rem;
+    line-height: 1.55;
+    letter-spacing: -0.01em;
+  }
+
+  /* Scrollbar — exact reference values: violet thumb */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 0;
+    box-shadow: inset 0 0 0 var(--accenty);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--accentv);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--bviolet);
   }
 }
 
-/* 
-@keyframes scroll {
-  0% { transform: translateX(30%); }
-  100% { transform: translateX(-30%); }
+/* ── Blueprint Grid ──────────────────────────────────── */
+.blueprint-grid {
+  background-image:
+    linear-gradient(var(--bline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bline) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: -1px -1px;
 }
 
-.animate-scroll {
-  animation: scroll 10s linear infinite;
-} */
+/* ── Page Loader bar ─────────────────────────────────── */
+.loader-bar {
+  height: 2px;
+  background: linear-gradient(90deg, var(--accentv), var(--accentc), var(--accenty));
+  transition: width 40ms linear;
+  border-radius: 9999px;
+}
+
+/* ── Marquee ─────────────────────────────────────────── */
+@keyframes marquee-left {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(calc(-50% - 0.5rem));
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 1rem;
+  animation: marquee-left 30s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ── Letter reveal ───────────────────────────────────── */
+@keyframes letter-in {
+  0% {
+    opacity: 0;
+    transform: translateY(48px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.letter-reveal span {
+  display: inline-block;
+  opacity: 0;
+  animation: letter-in 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ── Grid cell hover ─────────────────────────────────── */
+.grid-cell {
+  width: 64px;
+  height: 64px;
+  border-right: 1px solid var(--bline);
+  border-bottom: 1px solid var(--bline);
+  transition: background 300ms ease;
+  cursor: default;
+}
+
+.grid-cell:hover {
+  background: rgba(163, 116, 255, 0.1);
+}
+
+/* ── Scroll reveal ── now always visible (GSAP handles animations) */
+.scroll-reveal {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Typography (matching reference exact sizes) ─────── */
+/* Hero — fills viewport width like reference (~120-140px desktop) */
+.text-display {
+  font-family: var(--font-hanken, system-ui);
+  font-size: clamp(3.25rem, 11vw, 9.5rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+}
+
+/* Section headings — "Experience & skills." style (~40-48px) */
+.text-headline {
+  font-family: var(--font-hanken, system-ui);
+  font-size: clamp(1.5rem, 3.5vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+
+/* Skill row title — "Frontend", "Backend" etc */
+.text-skill-title {
+  font-family: var(--font-hanken, system-ui);
+  font-size: clamp(1.8rem, 4vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  overflow: visible;
+  white-space: nowrap;
+}
+
+/* Code comment */
+.code-comment {
+  font-size: 0.6875rem;
+  color: var(--sectext);
+  opacity: 0.45;
+  letter-spacing: 0.01em;
+  font-family: var(--font-geist-mono, monospace);
+}
+
+/* ── Nav pill ────────────────────────────────────────── */
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--bline);
+  border-radius: 9999px;
+  padding: 4px 6px;
+  background: rgba(14, 16, 15, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  /* 13px — exact reference */
+  font-weight: 500;
+  color: var(--sectext);
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  transition: color 150ms ease;
+  white-space: nowrap;
+  font-family: var(--font-hanken, system-ui);
+}
+
+.nav-link:hover {
+  color: var(--accentb);
+}
+
+.nav-link.active {
+  color: var(--accentb);
+}
+
+/* ── Buttons ─────────────────────────────────────────── */
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  border-radius: 9999px;
+  border: 1px solid var(--bline);
+  color: var(--sectext);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  transition: color 150ms ease, border-color 150ms ease, transform 150ms ease;
+  cursor: pointer;
+  background: transparent;
+  text-decoration: none;
+  font-family: var(--font-hanken, system-ui);
+}
+
+.btn-pill:hover {
+  color: var(--primarytext);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateX(3px);
+}
+
+.btn-pill:active {
+  transform: scale(0.97);
+}
+
+/* ── Tag chip ────────────────────────────────────────── */
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  border: 1px solid var(--bline);
+  font-size: 0.6875rem;
+  /* 11px */
+  color: var(--sectext);
+  opacity: 0.8;
+  white-space: nowrap;
+  transition: border-color 150ms ease, opacity 150ms ease;
+  font-family: var(--font-hanken, system-ui);
+}
+
+.tag-chip:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  opacity: 1;
+}
+
+/* ── What-I-Do card ──────────────────────────────────── */
+.what-card {
+  border: 1px solid var(--bline);
+  border-radius: 10px;
+  padding: 1.5rem;
+  background: var(--bgcard);
+  transition: border-color 200ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.what-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.032) 1px, transparent 1px);
+  background-size: 18px 18px;
+  pointer-events: none;
+}
+
+.what-card:hover {
+  border-color: rgba(255, 255, 255, 0.11);
+}
+
+/* ── Stat / project row ──────────────────────────────── */
+.stat-row {
+  border-top: 1px solid var(--bline);
+  padding: 1.375rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  transition: background 150ms ease;
+}
+
+.stat-row:hover {
+  background: rgba(163, 116, 255, 0.04);
+}
+
+/* ── Skill row ───────────────────────────────────────── */
+.skill-row {
+  border-top: 1px solid var(--bline);
+  padding: 2rem 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 0.75rem 2rem;
+  align-items: start;
+  transition: background 150ms ease;
+}
+
+/* Title spans full width so it never clips */
+.skill-row > div:first-child {
+  grid-column: 1 / -1;
+}
+
+.skill-row:hover {
+  background: rgba(255, 255, 255, 0.013);
+}
+
+@media (max-width: 768px) {
+  .skill-row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+/* ── Aceternity — Spotlight ──────────────────────────── */
+@keyframes spotlight-move {
+  0% {
+    opacity: 0;
+    transform: translate(-72%, -62%) scale(0.5);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -40%) scale(1);
+  }
+}
+
+.spotlight {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.spotlight::after {
+  content: '';
+  position: absolute;
+  width: 60vw;
+  height: 60vw;
+  top: 0;
+  left: 50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(163, 116, 255, 0.12) 0%, transparent 70%);
+  animation: spotlight-move 1.2s ease forwards;
+}
+
+/* ── Aceternity — Gradient text ──────────────────────── */
+.gradient-text-vp {
+  background: linear-gradient(135deg, var(--accentv) 0%, var(--accentp) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-yc {
+  background: linear-gradient(135deg, var(--accenty) 0%, var(--accentc) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-cv {
+  background: linear-gradient(135deg, var(--accentc) 0%, var(--accentv) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Aceternity — Animated border glow ──────────────── */
+@keyframes border-glow {
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.glow-border {
+  position: relative;
+}
+
+.glow-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--accentv), var(--accentc), var(--accenty));
+  opacity: 0;
+  transition: opacity 300ms ease;
+  z-index: -1;
+}
+
+.glow-border:hover::before {
+  opacity: 1;
+  animation: border-glow 2s ease infinite;
+}
+
+/* ── React-Bits — Shiny text ─────────────────────────── */
+@keyframes shiny-move {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 200%;
+  }
+}
+
+.shiny-text {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.shiny-text::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -100%;
+  width: 60%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  animation: shiny-move 3.5s ease-in-out infinite;
+  transform: skewX(-20deg);
+}
+
+/* ── Footer big type ─────────────────────────────────── */
+.footer-name {
+  font-family: var(--font-hanken, system-ui);
+  font-size: clamp(4rem, 18vw, 16rem);
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  line-height: 0.85;
+  color: var(--primarytext);
+  user-select: none;
+}
+
+/* ── Section layout tokens ───────────────────────────── */
+/* Reference site uses tight horizontal padding */
+.section-x {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .section-x {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .section-x {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.section-y {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 768px) {
+  .section-y {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 200ms !important;
+  }
+
+  .marquee-track {
+    animation: none;
+  }
+
+  .letter-reveal span {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+
+  .scroll-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

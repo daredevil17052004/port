@@ -1,105 +1,165 @@
-
 'use client';
-import { useState } from "react";
+
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const spring = { type: 'spring', bounce: 0, duration: 0.35 };
 
 export default function ContactForm() {
   const [loading, setLoading] = useState(false);
+  const [status,  setStatus]  = useState(null);
+  const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setStatus(null);
 
-    const formData = new FormData(e.target);
     const data = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      message: formData.get("message"),
+      name:    e.target.name.value,
+      email:   e.target.email.value,
+      message: e.target.message.value,
     };
 
     try {
-      const res = await fetch("https://portfolio-backend-fjiu.onrender.com/contact", {  // 👈 FastAPI endpoint
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('https://portfolio-backend-fjiu.onrender.com/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-
       if (res.ok) {
-        alert("✅ Message sent and stored successfully!");
+        setStatus('success');
+        setMessage("Message sent! I'll get back to you soon.");
         e.target.reset();
       } else {
         const err = await res.json();
-        alert(`❌ Failed: ${err.message || "Unknown error"}`);
+        setStatus('error');
+        setMessage(err.message || 'Something went wrong. Please try again.');
       }
-    } catch (error) {
-      console.error("Error sending message:", error);
-      alert("❌ Failed to connect to backend");
+    } catch {
+      setStatus('error');
+      setMessage('Could not reach the server. Please try again later.');
     } finally {
       setLoading(false);
     }
   };
 
-  return (
-    <div className=" relative w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 z-40">
-      <form 
-        onSubmit={handleSubmit} 
-        className="grid gap-4 sm:gap-6 bg-slate-950 dark:bg-gray-900 shadow-xl p-4 sm:p-6 lg:p-8 w-full max-w-full sm:max-w-2xl lg:max-w-4xl mx-auto rounded-xl font-chakra mb-6 z-20"
-      >
-        <input
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          className="p-3 sm:p-4 bg-transparent text-white text-sm sm:text-base rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-600 transition-all duration-200"
-          required
-        />
+  const base = {
+    width: '100%',
+    padding: '0.875rem 1.125rem',
+    background: 'rgba(255,255,227,0.03)',
+    border: '1px solid var(--bline)',
+    borderRadius: '0.5rem',
+    color: 'var(--primarytext)',
+    fontSize: '0.9rem',
+    letterSpacing: '-0.005em',
+    fontFamily: 'var(--font-hanken, system-ui)',
+    outline: 'none',
+    transition: 'border-color 150ms ease',
+    caretColor: 'var(--accentc)',
+  };
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email Address"
-          className="p-3 sm:p-4 bg-transparent text-white text-sm sm:text-base rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-600 transition-all duration-200"
-          required
-        />
+  const focus = (e) => { e.target.style.borderColor = 'var(--accentc)'; };
+  const blur  = (e) => { e.target.style.borderColor = 'var(--bline)'; };
+
+  return (
+    <div className="w-full max-w-xl">
+      <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1rem' }}>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <input
+            id="contact-name"
+            name="name"
+            type="text"
+            placeholder="Your Name"
+            required
+            style={base}
+            onFocus={focus}
+            onBlur={blur}
+          />
+          <input
+            id="contact-email"
+            name="email"
+            type="email"
+            placeholder="Email Address"
+            required
+            style={base}
+            onFocus={focus}
+            onBlur={blur}
+          />
+        </div>
 
         <textarea
+          id="contact-message"
           name="message"
-          placeholder="Your Message"
-          className="p-3 sm:p-4 bg-transparent text-white text-sm sm:text-base rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white h-32 sm:h-36 lg:h-40 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-600 transition-all duration-200"
+          placeholder="Tell me about your project..."
+          rows={5}
           required
-        ></textarea>
+          style={{ ...base, resize: 'none' }}
+          onFocus={focus}
+          onBlur={blur}
+        />
 
-        <button
+        <motion.button
+          id="contact-submit"
           type="submit"
-          className="w-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 hover:bg-cyan-600 disabled:bg-cyan-400 disabled:cursor-not-allowed text-white py-3 sm:py-4 text-sm sm:text-base font-medium rounded-xl transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
           disabled={loading}
+          style={{
+            padding: '0.875rem 2rem',
+            borderRadius: '9999px',
+            border: '1px solid var(--bline)',
+            background: 'transparent',
+            color: 'var(--sectext)',
+            fontSize: '0.875rem',
+            fontWeight: 600,
+            letterSpacing: '-0.005em',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            opacity: loading ? 0.5 : 1,
+            fontFamily: 'var(--font-hanken, system-ui)',
+            width: 'fit-content',
+            transition: 'all 150ms ease',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+          }}
+          whileTap={!loading ? { scale: 0.97 } : undefined}
+          transition={{ type: 'spring', bounce: 0, duration: 0.2 }}
+          onMouseEnter={(e) => {
+            if (!loading) {
+              e.currentTarget.style.borderColor = 'var(--accentc)';
+              e.currentTarget.style.color = 'var(--accentc)';
+              e.currentTarget.style.transform = 'translateX(4px)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = 'var(--bline)';
+            e.currentTarget.style.color = 'var(--sectext)';
+            e.currentTarget.style.transform = 'translateX(0)';
+          }}
         >
-          {loading ? (
-            <span className="flex items-center justify-center gap-2">
-              <svg
-                className="animate-spin -ml-1 mr-3 h-4 w-4 sm:h-5 sm:w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-              Sending...
-            </span>
-          ) : (
-            "🚀 Send Message"
+          {loading ? 'Sending...' : 'Send Message →'}
+        </motion.button>
+
+        <AnimatePresence>
+          {status && (
+            <motion.p
+              role={status === 'error' ? 'alert' : 'status'}
+              aria-live="polite"
+              style={{
+                fontSize: '0.8125rem',
+                color: status === 'success' ? 'var(--accentc)' : '#f87171',
+                letterSpacing: '0',
+                fontFamily: 'var(--font-hanken, system-ui)',
+              }}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={spring}
+            >
+              {status === 'success' ? '✓ ' : '✕ '}{message}
+            </motion.p>
           )}
-        </button>
+        </AnimatePresence>
       </form>
     </div>
   );

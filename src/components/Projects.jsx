@@ -1,229 +1,231 @@
 'use client';
+
+/*
+  Projects — Apple Design §1, §3, §4, §7
+  ────────────────────────────────────────
+  §1  Action buttons give instant whileTap compression
+  §3  Card hover uses spring (not CSS transition) — interruptible mid-hover
+  §4  Springs everywhere: critically-damped default, slight bounce on flick release
+  §7  Cards enter from below, exit back below (symmetric path)
+*/
+
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
-const Projects = () => {
-  const projects = [
-    {
-      name: 'Maintainer - A Car Management App',
-      description:
-        'An app for managing car maintenance records, service history, and reminders. Features include user authentication, service tracking, and analytics dashboard.',
-      technologies: ['Next.js', 'Tailwind CSS', 'Node.js', 'Express.js', 'MongoDB'],
-      repo: 'https://github.com/daredevil17052004/maintainer.git',
-      live_demo: 'https://maintainer-next.netlify.app/',
-      image: '/maintainer.png',
-    },
-    {
-      name: 'AI Meeting Notes Bot',
-      description: 'A bot that joins meetings, transcribes audio, and generates summarized notes.',
-      technologies: ['Python', 'Selenium', 'Whisper AI', 'Gemini API'],
-      repo: 'https://github.com/Team-DSA/Notei.git',
-      live_demo: 'https://main-ui-phi.vercel.app/',
-      image: '/notei.png',
-    },
-    {
-      name: 'InstruRentals',
-      description:
-        'An online platform for renting musical instruments with user authentication and payment integration.',
-      technologies: ['React.js', 'MongoDB', 'Express.js', 'Node.js', 'Tailwind CSS', 'Redux', 'Razorpay'],
-      repo: 'https://github.com/kalviumcommunity/S47_Ansh_Capstone_InstruRentals.git',
-      live_demo: 'https://instrurentalss.netlify.app/',
-      image: '/instrurentals.png',
-    },
-    {
-      name: 'Eksodi - CI/CD Deployment Manager',
-      description: 'A lightweight CI/CD deployment manager for Docker, Kubernetes, and cloud VMs.',
-      technologies: ['Next.js', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Redis', 'Docker', 'Kubernetes', 'GitHub Actions', 'Prometheus', 'Grafana'],
-      repo: 'https://github.com/Eksodi/Main',
-      live_demo: '/',
-      image: '/eksodi.png',
-    },
-    {
-      name: 'Library Management System',
-      description: 'A full-stack system for managing book issuance and tracking returns, with a dashboard UI.',
-      technologies: ['Next.js', 'Express.js', 'MySQL', 'Docker', 'Nginx', 'Tailwind CSS', 'AWS EC2', 'Github Actions'],
-      repo: 'https://github.com/daredevil17052004/LibraryManagementSys.git',
-      live_demo: '/',
-      image: '/lib.png',
-    },
-    {
-      name: 'Personal Neovim',
-      description: 'A personal Neovim configuration with plugins and themes for enhanced coding experience.',
-      technologies: ['Neovim', 'Lua', 'GitHub'],
-      repo: 'https://github.com/daredevil17052004/nvim-dotfiles',
-      live_demo: '',
-      image: '/neovim.jpg',
-    },
-  ];
+const projects = [
+  {
+    name: 'Maintainer — Car Management App',
+    description:
+      'An app for managing car maintenance records, service history, and reminders. Features user authentication, service tracking, and analytics dashboard.',
+    technologies: ['Next.js', 'Tailwind CSS', 'Node.js', 'Express.js', 'MongoDB'],
+    repo: 'https://github.com/daredevil17052004/maintainer.git',
+    live_demo: 'https://maintainer-next.netlify.app/',
+    image: '/maintainer.png',
+  },
+  {
+    name: 'AI Meeting Notes Bot',
+    description: 'A bot that joins meetings, transcribes audio, and generates summarized notes using Whisper AI.',
+    technologies: ['Python', 'Selenium', 'Whisper AI', 'Gemini API'],
+    repo: 'https://github.com/Team-DSA/Notei.git',
+    live_demo: 'https://main-ui-phi.vercel.app/',
+    image: '/notei.png',
+  },
+  {
+    name: 'InstruRentals',
+    description:
+      'An online platform for renting musical instruments with user authentication and payment integration via Razorpay.',
+    technologies: ['React.js', 'MongoDB', 'Express.js', 'Node.js', 'Tailwind CSS', 'Redux', 'Razorpay'],
+    repo: 'https://github.com/kalviumcommunity/S47_Ansh_Capstone_InstruRentals.git',
+    live_demo: 'https://instrurentalss.netlify.app/',
+    image: '/instrurentals.png',
+  },
+  {
+    name: 'Eksodi — CI/CD Deployment Manager',
+    description: 'A lightweight CI/CD deployment manager for Docker, Kubernetes, and cloud VMs.',
+    technologies: ['Next.js', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Redis', 'Docker', 'Kubernetes'],
+    repo: 'https://github.com/Eksodi/Main',
+    live_demo: null,
+    image: '/eksodi.png',
+  },
+  {
+    name: 'Library Management System',
+    description: 'A full-stack system for managing book issuance and tracking returns, with a dashboard UI.',
+    technologies: ['Next.js', 'Express.js', 'MySQL', 'Docker', 'Nginx', 'Tailwind CSS', 'AWS EC2'],
+    repo: 'https://github.com/daredevil17052004/LibraryManagementSys.git',
+    live_demo: null,
+    image: '/lib.png',
+  },
+  {
+    name: 'Personal Neovim Config',
+    description: 'A personal Neovim configuration with plugins and themes for an enhanced coding experience.',
+    technologies: ['Neovim', 'Lua', 'GitHub'],
+    repo: 'https://github.com/daredevil17052004/nvim-dotfiles',
+    live_demo: null,
+    image: '/neovim.jpg',
+  },
+];
 
-  const [isMobile, setIsMobile] = useState(false);
+// Spring configs (§4)
+const springDefault = { type: 'spring', bounce: 0,    duration: 0.4 };
+const springSnappy  = { type: 'spring', bounce: 0,    duration: 0.25 };
 
-  useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
-    };
-    checkIsMobile();
-    window.addEventListener('resize', checkIsMobile);
-    return () => window.removeEventListener('resize', checkIsMobile);
-  }, []);
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.1 },
+  },
+};
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2 },
-    },
-  };
+const cardVariants = {
+  // §7 — enters from below, exits back below (symmetric)
+  hidden:   { opacity: 0, y: 40 },
+  visible:  { opacity: 1, y: 0,  transition: springDefault },
+};
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0 },
-  };
-
+function ProjectCard({ project, isMobile }) {
   return (
-    <motion.div
-      className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 px-4 md:px-0"
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
+    <motion.article
+      variants={cardVariants}
+      className="relative group rounded-2xl overflow-hidden shadow-2xl bg-slate-900/50 border border-slate-700/50 h-80 sm:h-96 motion-ready"
+      // §3 — spring hover is interruptible (Framer Motion re-targets from current value)
+      whileHover={!isMobile ? { y: -6, scale: 1.015 } : undefined}
+      transition={springDefault}
     >
-      {projects.map((project, index) => (
-        <motion.div
-          key={index}
-          variants={cardVariants}
-          className="relative group rounded-2xl overflow-hidden shadow-2xl bg-slate-900/40 backdrop-blur-sm border border-slate-700/50 hover:border-cyan-400/50 transition-all duration-500 h-80 sm:h-96 lg:h-80 xl:h-96"
+      {/* Background image with spring-based blur/scale transition (§3, §4) */}
+      <motion.div
+        className="absolute inset-0 overflow-hidden"
+        initial={false}
+      >
+        <motion.img
+          src={project.image}
+          alt={`Screenshot of ${project.name}`}
+          className="w-full h-full object-cover"
+          // §3 — filter transition uses spring so hover-out reversal is smooth
+          variants={{
+            rest:  { filter: isMobile ? 'blur(6px) brightness(0.45)' : 'blur(3px) brightness(0.75)', scale: 1 },
+            hover: { filter: 'blur(9px) brightness(0.18)', scale: 1.04 },
+          }}
           initial="rest"
           animate="rest"
           whileHover={!isMobile ? 'hover' : undefined}
-        >
-          <motion.div
-            className="absolute inset-0 overflow-hidden"
-            variants={{
-              rest: { scale: 1 },
-              hover: { scale: 1.05 },
-            }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-          >
-            <motion.img
-              src={project.image}
-              alt={project.name}
-              className="w-full h-full object-cover"
-              variants={{
-                rest: {
-                  filter: isMobile ? 'blur(8px) brightness(0.5)' : 'blur(4px) brightness(0.8)',
-                },
-                hover: {
-                  filter: isMobile ? 'blur(8px) brightness(0.5)' : 'blur(8px) brightness(0.2)',
-                },
-              }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-            />
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent"
-              variants={{
-                rest: { opacity: isMobile ? 1 : 0.6 },
-                hover: { opacity: 0.9 },
-              }}
-              transition={{ duration: 0.4 }}
-            />
-          </motion.div>
+          transition={springDefault}
+        />
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/30 to-transparent" />
+      </motion.div>
 
-          <motion.div
-            className="absolute inset-0 z-10 p-4 sm:p-6 flex flex-col justify-between text-white"
-            variants={{
-              rest: { opacity: isMobile ? 1 : 0.8, y: isMobile ? 0 : 10 },
-              hover: { opacity: 1, y: 0 },
-            }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-          >
-            <div className="space-y-3">
-              <motion.h3
-                className="text-lg sm:text-xl lg:text-2xl font-bold text-transparent bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text leading-tight"
-                variants={{
-                  rest: { scale: 1 },
-                  hover: { scale: 1.02 },
-                }}
-              >
-                {project.name}
-              </motion.h3>
+      {/* Content layer */}
+      <div className="absolute inset-0 z-10 p-5 sm:p-6 flex flex-col justify-between text-white">
+        {/* Top: name + description + tags */}
+        <div className="space-y-2.5">
+          <h3 className="text-lg sm:text-xl font-bold leading-snug tracking-[-0.01em] bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
+            {project.name}
+          </h3>
 
-              <motion.p
-                className="text-sm sm:text-base text-gray-200 leading-relaxed line-clamp-3"
-                variants={{
-                  rest: { opacity: isMobile ? 1 : 0.8 },
-                  hover: { opacity: 1 },
-                }}
-              >
-                {project.description}
-              </motion.p>
+          <p className="text-sm sm:text-[0.9rem] text-gray-300 leading-relaxed line-clamp-3">
+            {project.description}
+          </p>
 
-              {project.technologies && project.technologies.length > 0 && (
-                <motion.div
-                  className="flex flex-wrap gap-1.5 sm:gap-2 mt-3"
-                  variants={{
-                    rest: { opacity: isMobile ? 1 : 0.7 },
-                    hover: { opacity: 1 },
-                  }}
+          {project.technologies?.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              {project.technologies.slice(0, isMobile ? 3 : 5).map((tech) => (
+                <span
+                  key={tech}
+                  className="bg-slate-800/80 backdrop-blur-sm text-cyan-300 text-[0.7rem] px-2.5 py-0.5 rounded-full border border-cyan-400/25 font-medium tracking-wide"
                 >
-                  {project.technologies
-                    .slice(0, isMobile ? 4 : 6)
-                    .map((tech, i) => (
-                      <span
-                        key={i}
-                        className="bg-slate-800/80 backdrop-blur-sm text-cyan-300 text-xs px-2.5 py-1 rounded-full border border-cyan-400/30 font-medium"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  {project.technologies.length > (isMobile ? 4 : 6) && (
-                    <span className="bg-slate-800/80 backdrop-blur-sm text-gray-400 text-xs px-2.5 py-1 rounded-full border border-gray-500/30 font-medium">
-                      +{project.technologies.length - (isMobile ? 4 : 6)}
-                    </span>
-                  )}
-                </motion.div>
+                  {tech}
+                </span>
+              ))}
+              {project.technologies.length > (isMobile ? 3 : 5) && (
+                <span className="bg-slate-800/80 text-gray-400 text-[0.7rem] px-2.5 py-0.5 rounded-full border border-gray-600/30 font-medium">
+                  +{project.technologies.length - (isMobile ? 3 : 5)}
+                </span>
               )}
             </div>
+          )}
+        </div>
 
-            <motion.div
-              className="mt-4 space-y-3"
-              variants={{
-                rest: { opacity: isMobile ? 1 : 0.8, y: isMobile ? 0 : 10 },
-                hover: { opacity: 1, y: 0 },
-              }}
+        {/* Bottom: action buttons — instant press feedback (§1) */}
+        <div className="flex gap-2.5 mt-3">
+          {project.live_demo && (
+            <motion.a
+              href={project.live_demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              id={`live-demo-${project.name.replace(/\s+/g, '-').toLowerCase()}`}
+              className="
+                flex items-center gap-1.5
+                bg-cyan-500/15 hover:bg-cyan-500/25
+                border border-cyan-400/30 hover:border-cyan-400/50
+                px-3 py-2 rounded-lg
+                text-xs text-cyan-300 hover:text-cyan-200 font-medium
+                transition-colors duration-150
+              "
+              // §1 — instant compression on press, spring release (§4)
+              whileTap={{ scale: 0.94 }}
+              transition={springSnappy}
             >
-              <div className="text-xs sm:text-sm text-gray-300 font-medium">Explore this project:</div>
-              <div className="flex flex-wrap gap-2 sm:gap-3">
-                {project.live_demo && (
-                  <motion.a
-                    href={project.live_demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 hover:from-cyan-500/30 hover:to-blue-500/30 backdrop-blur-sm border border-cyan-400/30 hover:border-cyan-400/50 px-3 py-2 rounded-lg text-xs sm:text-sm text-cyan-300 hover:text-cyan-200 font-medium transition-all duration-300 hover:scale-105"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <img src="/live.png" alt="Live Demo" className="w-4 h-4" />
-                    <span>{project.live_demo === '/' ? 'Coming Soon' : 'Live Demo'}</span>
-                  </motion.a>
-                )}
-                {project.repo && (
-                  <motion.a
-                    href={project.repo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 hover:from-purple-500/30 hover:to-pink-500/30 backdrop-blur-sm border border-purple-400/30 hover:border-purple-400/50 px-3 py-2 rounded-lg text-xs sm:text-sm text-purple-300 hover:text-purple-200 font-medium transition-all duration-300 hover:scale-105"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <img src="/coding.png" alt="Code Repo" className="w-4 h-4" />
-                    <span>Code</span>
-                  </motion.a>
-                )}
-              </div>
-            </motion.div>
-          </motion.div>
-        </motion.div>
+              <img src="/live.png" alt="" className="w-3.5 h-3.5" aria-hidden="true" />
+              Live Demo
+            </motion.a>
+          )}
+          {!project.live_demo && (
+            <span className="
+              flex items-center gap-1.5
+              bg-slate-700/40 border border-slate-600/30
+              px-3 py-2 rounded-lg
+              text-xs text-gray-500 font-medium
+            ">
+              Coming Soon
+            </span>
+          )}
+          {project.repo && (
+            <motion.a
+              href={project.repo}
+              target="_blank"
+              rel="noopener noreferrer"
+              id={`repo-${project.name.replace(/\s+/g, '-').toLowerCase()}`}
+              className="
+                flex items-center gap-1.5
+                bg-violet-500/15 hover:bg-violet-500/25
+                border border-violet-400/30 hover:border-violet-400/50
+                px-3 py-2 rounded-lg
+                text-xs text-violet-300 hover:text-violet-200 font-medium
+                transition-colors duration-150
+              "
+              whileTap={{ scale: 0.94 }}
+              transition={springSnappy}
+            >
+              <img src="/coding.png" alt="" className="w-3.5 h-3.5" aria-hidden="true" />
+              Code
+            </motion.a>
+          )}
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+const Projects = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  return (
+    <motion.div
+      className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 lg:gap-8 px-4 md:px-0"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-60px' }}
+    >
+      {projects.map((project) => (
+        <ProjectCard key={project.name} project={project} isMobile={isMobile} />
       ))}
     </motion.div>
   );
