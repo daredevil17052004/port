@@ -43,7 +43,7 @@ const STACK = [
 function Marquee() {
   const items = [...STACK, ...STACK];
   return (
-    <div style={{ overflow: 'hidden', borderTop: '1px solid var(--bline)', borderBottom: '1px solid var(--bline)', padding: '14px 0' }}>
+    <div style={{ overflow: 'hidden', borderTop: '1px solid var(--bline)', borderBottom: '1px solid var(--bline)', padding: '14px 0', width: '100%', maxWidth: '100%' }}>
       <div className="marquee-track">
         {items.map((item, i) => (
           <div
@@ -79,18 +79,15 @@ export default function Footer() {
   ];
 
   return (
-    <footer style={{ background: 'var(--background)', borderTop: '1px solid var(--bline)' }}>
+    <footer style={{ background: 'var(--background)', borderTop: '1px solid var(--bline)', overflowX: 'hidden', width: '100%', maxWidth: '100%' }}>
 
       <Marquee />
 
       {/* ── 4-column footer grid ── */}
-      <div style={{ borderTop: '1px solid var(--bline)' }}>
-        <div className="section-x" style={{
+      <div style={{ borderTop: '1px solid var(--bline)', overflowX: 'hidden' }}>
+        <div className="section-x grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10" style={{
           paddingTop: '52px', paddingBottom: '52px',
           maxWidth: '1400px', margin: '0 auto',
-          display: 'grid',
-          gridTemplateColumns: '1.2fr 1fr 1.4fr 1.1fr',
-          gap: '40px',
           alignItems: 'start',
         }}>
 

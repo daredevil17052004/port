@@ -42,7 +42,7 @@ export default function PageTransition({ children }) {
   }, [pathname]);
 
   return (
-    <div style={{ position: 'relative', minHeight: '100vh' }}>
+    <div style={{ position: 'relative', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
       {/* Curtain overlay */}
       <div
         ref={overlayRef}
@@ -57,7 +57,7 @@ export default function PageTransition({ children }) {
         }}
       />
       {/* Page content */}
-      <div ref={wrapRef} style={{ opacity: 0 }}>
+      <div ref={wrapRef} style={{ opacity: 0, overflowX: 'hidden', maxWidth: '100%' }}>
         {children}
       </div>
     </div>

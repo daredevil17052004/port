@@ -534,7 +534,7 @@ export default function ProjectsPage() {
         pointerEvents: 'none', zIndex: 0,
       }} />
 
-      <main style={{ background: 'var(--background)', minHeight: '100vh', position: 'relative', zIndex: 1 }}>
+      <main style={{ background: 'var(--background)', minHeight: '100vh', position: 'relative', zIndex: 1, overflowX: 'hidden', width: '100%', maxWidth: '100%' }}>
 
         {/* ── Page Header ── */}
         <section style={{
@@ -586,6 +586,7 @@ export default function ProjectsPage() {
                   fontSize: 'clamp(3.5rem, 9vw, 8rem)',
                   lineHeight: 0.92,
                   marginBottom: '28px',
+                  wordBreak: 'break-word',
                 }}
               >
                 Projects.
@@ -617,6 +618,7 @@ export default function ProjectsPage() {
                 backdropFilter: 'blur(12px)',
                 WebkitBackdropFilter: 'blur(12px)',
                 width: 'fit-content',
+                maxWidth: '100%',
                 overflow: 'hidden',
                 marginBottom: '40px',
               }}>
@@ -627,9 +629,10 @@ export default function ProjectsPage() {
                   { label: 'Categories', value: CATEGORIES.length - 1 },
                 ].map((stat, i) => (
                   <div key={stat.label} style={{
-                    padding: '16px 28px',
+                    padding: '14px 24px',
                     borderRight: i < 3 ? '1px solid var(--bline)' : 'none',
                     textAlign: 'center',
+                    flex: '1 1 auto',
                   }}>
                     <div style={{
                       color: 'var(--primarytext)',
@@ -726,7 +729,7 @@ export default function ProjectsPage() {
             /* Skeleton loader */
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 340px), 1fr))',
               gap: '20px',
             }}>
               {[1, 2, 3].map(i => (
@@ -756,10 +759,10 @@ export default function ProjectsPage() {
             </div>
           ) : (
             <>
-              {/* Featured cards — 3-col grid */}
+              {/* Featured cards — responsive grid */}
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 340px), 1fr))',
                 gap: '20px',
               }}>
                 {featured.map((project, i) => (
@@ -790,7 +793,7 @@ export default function ProjectsPage() {
 
                   <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(480px, 1fr))',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 420px), 1fr))',
                     gap: '10px',
                   }}>
                     {rest.map((project, i) => (
