@@ -7,7 +7,7 @@ import {
   IconBrandGithub,
   IconExternalLink,
   IconArrowUpRight,
-  IconCode2,
+  IconCode,
 } from '@tabler/icons-react';
 import NavigationBar from '@/components/NavigationBar';
 import Footer from '@/components/Footer';
@@ -744,7 +744,7 @@ export default function ProjectsPage() {
               color: 'var(--accento)', opacity: 0.7,
               fontFamily: 'var(--font-hanken, system-ui)',
             }}>
-              <IconCode2 size={32} style={{ marginBottom: '12px', opacity: 0.5, display: 'block', margin: '0 auto 12px' }} />
+              <IconCode size={32} style={{ marginBottom: '12px', opacity: 0.5, display: 'block', margin: '0 auto 12px' }} />
               <p>Couldn&apos;t fetch from GitHub — showing local data</p>
               <p style={{ fontSize: '0.8125rem', opacity: 0.5, marginTop: '8px' }}>{error}</p>
             </div>
