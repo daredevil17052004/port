@@ -95,10 +95,10 @@ export const GlowingStarsCard = ({ title, description, icon, iconColor }) => {
         {/* Title */}
         <h3 style={{
           color: iconColor, // The reference colors the title with the icon color
-          fontSize: '1.05rem',
-          fontWeight: 700,
+          fontSize: '0.9375rem',
+          fontWeight: 600,
           letterSpacing: '-0.01em',
-          marginBottom: '12px',
+          marginBottom: '8px',
           fontFamily: 'var(--font-hanken, system-ui)',
         }}>
           {title}
@@ -107,9 +107,9 @@ export const GlowingStarsCard = ({ title, description, icon, iconColor }) => {
         {/* Description */}
         <p style={{
           color: 'var(--sectext)',
-          opacity: 0.85,
-          fontSize: '0.875rem',
-          lineHeight: 1.6,
+          opacity: 0.75,
+          fontSize: '0.8125rem',
+          lineHeight: 1.55,
           fontFamily: 'var(--font-hanken, system-ui)',
           letterSpacing: '-0.01em',
         }}>

@@ -162,32 +162,32 @@
   transform: none;
 }
 
-/* ── Typography (matching reference exact sizes) ─────── */
-/* Hero — fills viewport width like reference (~120-140px desktop) */
+/* ── Typography (refined elegant sizing) ─────── */
+/* Hero — refined size and weight */
 .text-display {
   font-family: var(--font-hanken, system-ui);
-  font-size: clamp(3.25rem, 11vw, 9.5rem);
-  font-weight: 900;
-  line-height: 0.9;
-  letter-spacing: -0.035em;
+  font-size: clamp(2.25rem, 6.5vw, 5.5rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.025em;
 }
 
-/* Section headings — "Experience & skills." style (~40-48px) */
+/* Section headings — "Experience & skills." style (~28-36px) */
 .text-headline {
   font-family: var(--font-hanken, system-ui);
-  font-size: clamp(1.5rem, 3.5vw, 2.75rem);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.025em;
+  font-size: clamp(1.25rem, 2.5vw, 2rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 /* Skill row title — "Frontend", "Backend" etc */
 .text-skill-title {
   font-family: var(--font-hanken, system-ui);
-  font-size: clamp(1.8rem, 4vw, 3.5rem);
-  font-weight: 800;
+  font-size: clamp(1.35rem, 2.75vw, 2.25rem);
+  font-weight: 600;
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   overflow: visible;
   white-space: nowrap;
 }

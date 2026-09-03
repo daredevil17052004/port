@@ -242,7 +242,7 @@ function HeroSection() {
         </div>
 
         {/* Giant stacked titles â€” GSAP line-by-line */}
-        <div style={{ position: 'relative', lineHeight: 0.92, overflow: 'hidden' }}>
+        <div style={{ position: 'relative', lineHeight: 0.95, overflow: 'hidden' }}>
 
           {/* Line 1 */}
           <div data-hero="line" style={{ position: 'relative', marginBottom: '4px', opacity: 0 }}>
@@ -255,7 +255,7 @@ function HeroSection() {
           </div>
 
           {/* Line 2 */}
-          <div data-hero="line" style={{ position: 'relative', marginBottom: '4px', opacity: 0 }}>
+          <div data-hero="line" style={{ position: 'relative', marginBottom: '4px', opacity: 0  }}>
             <h1 className="text-display block" style={{ color: 'var(--accenty)' }}>
               DEVELOPER
             </h1>
@@ -276,11 +276,11 @@ function HeroSection() {
         <p
           data-hero="tagline"
           style={{
-            maxWidth: '520px', margin: '28px auto 0',
-            color: 'var(--primarytext)',
+            maxWidth: '480px', margin: '24px auto 0',
+            color: 'var(--sectext)',
             fontFamily: 'var(--font-hanken, system-ui)',
-            fontSize: 'clamp(0.9375rem, 1.5vw, 1.0625rem)',
-            lineHeight: 1.55, letterSpacing: '-0.005em',
+            fontSize: 'clamp(0.875rem, 1.25vw, 0.975rem)',
+            lineHeight: 1.6, letterSpacing: '-0.005em',
             opacity: 0,
           }}
         >
@@ -296,7 +296,7 @@ function HeroSection() {
           data-hero="socials"
           style={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            gap: '6px', marginTop: '36px', flexWrap: 'wrap',
+            gap: '6px', marginTop: '32px', flexWrap: 'wrap',
             opacity: 0,
           }}
         >
@@ -312,7 +312,7 @@ function HeroSection() {
               rel="noopener noreferrer"
               aria-label={label}
               style={{
-                width: '38px', height: '38px', borderRadius: '50%',
+                width: '36px', height: '36px', borderRadius: '50%',
                 border: '1px solid var(--bline)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 color: 'var(--sectext)', textDecoration: 'none',
@@ -321,28 +321,28 @@ function HeroSection() {
               onMouseEnter={e => { e.currentTarget.style.color = 'var(--accentb)'; e.currentTarget.style.borderColor = 'var(--accentb)'; }}
               onMouseLeave={e => { e.currentTarget.style.color = 'var(--sectext)'; e.currentTarget.style.borderColor = 'var(--bline)'; }}
             >
-              <Icon size={17} strokeWidth={1.6} />
+              <Icon size={16} strokeWidth={1.6} />
             </a>
           ))}
-          {/* Let's Connect pill â€” exact reference */}
+          {/* Let's Connect pill */}
           <a
             href="#contact"
             style={{
               display: 'flex', alignItems: 'center', gap: '8px',
-              padding: '8px 20px', borderRadius: '9999px',
+              padding: '6px 18px', borderRadius: '9999px',
               border: '1px solid var(--bline)',
-              color: 'var(--primarytext)', fontSize: '0.8125rem',
-              fontWeight: 600, textDecoration: 'none',
+              color: 'var(--primarytext)', fontSize: '0.75rem',
+              fontWeight: 500, textDecoration: 'none',
               fontFamily: 'var(--font-hanken, system-ui)', letterSpacing: '-0.005em',
               transition: 'border-color 150ms ease',
             }}
             onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accentg)'}
             onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--bline)'}
           >
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accentg)', animation: 'pulse 2s infinite', flexShrink: 0 }} />
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: 'var(--accentg)', animation: 'pulse 2s infinite', flexShrink: 0 }} />
             Let's Connect
           </a>
-          <span style={{ color: 'var(--sectext)', opacity: 0.4, fontSize: '0.8125rem', fontFamily: 'var(--font-hanken, system-ui)' }}>
+          <span style={{ color: 'var(--sectext)', opacity: 0.4, fontSize: '0.75rem', fontFamily: 'var(--font-hanken, system-ui)' }}>
             anshs052004@gmail.com
           </span>
         </div>
@@ -352,30 +352,30 @@ function HeroSection() {
 }
 
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════════════════════════════
 // WHAT I DO
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════════════════════════════
 const WHAT_CARDS = [
   {
-    icon: <IconTrendingUp size={24} strokeWidth={2.5} />,
+    icon: <IconTrendingUp size={22} strokeWidth={2.2} />,
     color: '#9d95ff', // var(--bviolet)
     title: 'Product Management',
     desc: 'Driving product strategy, customer discovery, roadmap planning, prioritization, and cross-functional execution.'
   },
   {
-    icon: <IconTools size={24} strokeWidth={2.5} />,
+    icon: <IconTools size={22} strokeWidth={2.2} />,
     color: 'var(--accentc)',
     title: 'UX & Product Design',
     desc: 'Creating user-centered experiences through research, interaction design, prototyping, and scalable design systems.'
   },
   {
-    icon: <IconRobot size={24} strokeWidth={2.5} />,
+    icon: <IconRobot size={22} strokeWidth={2.2} />,
     color: '#f4a6da', // soft pink
     title: 'AI & Automation',
     desc: 'Building AI-native experiences using LLMs, intelligent workflows, prompt engineering, and automation.'
   },
   {
-    icon: <IconRocket size={24} strokeWidth={2.5} />,
+    icon: <IconRocket size={22} strokeWidth={2.2} />,
     color: '#ff8709', // var(--accento)
     title: 'Technical Product',
     desc: 'Collaborating with engineering, leveraging modern technologies, and shipping products from Idea to launch.'
@@ -384,7 +384,7 @@ const WHAT_CARDS = [
 
 function WhatIDo() {
   return (
-    <section id="whatido" className="section-x section-y" style={{ maxWidth: '1400px', margin: '0 auto', paddingTop: '80px', paddingBottom: '80px' }}>
+    <section id="whatido" className="section-x section-y" style={{ maxWidth: '1400px', margin: '0 auto', paddingTop: '64px', paddingBottom: '64px' }}>
       
       {/* Header row: Centered title with absolute right button */}
       <div style={{
@@ -392,11 +392,11 @@ function WhatIDo() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: '64px',
+        marginBottom: '48px',
       }}>
         <h2 style={{
           color: 'var(--accentv)',
-          fontSize: '1.5rem',
+          fontSize: '1.125rem',
           fontWeight: 600,
           letterSpacing: '0.04em',
           textTransform: 'uppercase',
@@ -410,10 +410,10 @@ function WhatIDo() {
           <a
             href="#about"
             style={{
-              display: 'inline-flex', alignItems: 'center', gap: '8px',
-              padding: '10px 24px', borderRadius: '9999px',
+              display: 'inline-flex', alignItems: 'center', gap: '6px',
+              padding: '8px 18px', borderRadius: '9999px',
               border: '1px solid var(--bline)',
-              color: 'var(--primarytext)', fontSize: '0.9375rem', fontWeight: 600,
+              color: 'var(--primarytext)', fontSize: '0.8125rem', fontWeight: 500,
               fontFamily: 'var(--font-hanken, system-ui)',
               letterSpacing: '-0.01em', textDecoration: 'none', background: 'transparent',
               transition: 'border-color 150ms ease, background 150ms ease',
@@ -427,7 +427,7 @@ function WhatIDo() {
               e.currentTarget.style.background = 'transparent';
             }}
           >
-            About Me <IconArrowRight size={16} strokeWidth={2} />
+            About Me <IconArrowRight size={14} strokeWidth={2} />
           </a>
         </div>
       </div>
@@ -435,7 +435,7 @@ function WhatIDo() {
       {/* 4-card grid with Aceternity-style GlowingStarsCard */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
         gap: '20px'
       }}>
         {WHAT_CARDS.map((card, i) => (
@@ -453,28 +453,28 @@ function WhatIDo() {
 }
 
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// SKILLS â€” numbered rows exactly like reference
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════════════════════════════
+// SKILLS — numbered rows exactly like reference
+// ════════════════════════════════════════════════════════════════════════════════
 const SKILLS = [
   {
     num: '01', title: 'Frontend', color: 'var(--accentv)',
-    desc: 'Pixel-perfect, responsive interfaces â€” components that feel alive and perform at scale.',
+    desc: 'Pixel-perfect, responsive interfaces — components that feel alive and perform at scale.',
     tags: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'Redux', 'Framer Motion']
   },
   {
     num: '02', title: 'Backend', color: 'var(--accenty)',
-    desc: 'RESTful APIs, authentication, databases, microservices â€” production-grade from day one.',
+    desc: 'RESTful APIs, authentication, databases, microservices — production-grade from day one.',
     tags: ['Node.js', 'Express', 'Python', 'MongoDB', 'PostgreSQL', 'JWT', 'GraphQL']
   },
   {
     num: '03', title: 'Engineering', color: 'var(--accentc)',
-    desc: 'Containerisation, CI/CD, cloud deployment â€” shipping reliably and repeatedly.',
+    desc: 'Containerisation, CI/CD, cloud deployment — shipping reliably and repeatedly.',
     tags: ['Docker', 'Linux', 'GitHub Actions', 'Nginx', 'AWS EC2', 'Kubernetes']
   },
   {
     num: '04', title: 'AI & Tools', color: 'var(--accentp)',
-    desc: 'Figma, Git workflows, AI-assisted development â€” moving fast without breaking things.',
+    desc: 'Figma, Git workflows, AI-assisted development — moving fast without breaking things.',
     tags: ['Figma', 'Git', 'Neovim', 'Whisper AI', 'Gemini API']
   },
 ];
@@ -482,7 +482,7 @@ const SKILLS = [
 function Skills() {
   return (
     <section id="skills" className="section-x section-y" style={{ maxWidth: '1400px', margin: '0 auto' }}>
-      <div style={{ marginBottom: '32px' }}>
+      <div style={{ marginBottom: '28px' }}>
         <p className="code-comment" style={{ marginBottom: '6px' }}>// expertise</p>
         <h2 className="text-headline gradient-text-yc">Experience &amp; skills.</h2>
       </div>
@@ -493,8 +493,8 @@ function Skills() {
             key={skill.title}
             className="skill-row"
           >
-            {/* Number + big title */}
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
+            {/* Number + title */}
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
               <span className="code-comment">{skill.num}</span>
               <span
                 className="text-skill-title shiny-text"
@@ -505,7 +505,7 @@ function Skills() {
             </div>
 
             {/* Description */}
-            <p style={{ color: 'var(--sectext)', opacity: 0.65, fontSize: '0.9rem', lineHeight: 1.65, paddingTop: '4px' }}>
+            <p style={{ color: 'var(--sectext)', opacity: 0.65, fontSize: '0.8125rem', lineHeight: 1.6, paddingTop: '4px' }}>
               {skill.desc}
             </p>
 
@@ -522,9 +522,9 @@ function Skills() {
 }
 
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// PROJECTS â€” stat row layout
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════════════════════════════
+// PROJECTS — stat row layout
+// ════════════════════════════════════════════════════════════════════════════════
 function Projects() {
   const { projects, loading, error } = useGithubProjects('daredevil17052004');
   const featuredProjects = projects.slice(0, 4);
@@ -554,7 +554,7 @@ function Projects() {
         >
           {/* Left */}
           <div style={{ flex: '1 1 160px', minWidth: 0 }}>
-            <p style={{ color: 'var(--primarytext)', fontSize: '0.9375rem', fontWeight: 600, letterSpacing: '-0.01em', marginBottom: '3px', fontFamily: 'var(--font-hanken, system-ui)' }}>
+            <p style={{ color: 'var(--primarytext)', fontSize: '0.875rem', fontWeight: 600, letterSpacing: '-0.01em', marginBottom: '3px', fontFamily: 'var(--font-hanken, system-ui)' }}>
               {p.name}
             </p>
             <p style={{ color: 'var(--sectext)', opacity: 0.45, fontSize: '0.75rem' }}>

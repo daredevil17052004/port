@@ -142,14 +142,14 @@ export default function NavigationBar() {
               textDecoration: 'none',
               color: 'var(--primarytext)',
               fontFamily: 'var(--font-hanken, system-ui)',
-              fontSize: '1.125rem', fontWeight: 700, letterSpacing: '-0.02em',
+              fontSize: '0.95rem', fontWeight: 600, letterSpacing: '-0.02em',
             }}
           >
             <img 
               src="/logo.jpg" 
               alt="Logo" 
               style={{
-                width: '32px', height: '32px', borderRadius: '50%',
+                width: '30px', height: '30px', borderRadius: '50%',
                 objectFit: 'cover', flexShrink: 0, display: 'block',
               }} 
             />
@@ -165,15 +165,15 @@ export default function NavigationBar() {
               background: 'rgba(255,255,255,0.04)',
               border: '1px solid var(--bline)',
               borderRadius: '9999px',
-              padding: '5px', gap: '2px',
+              padding: '4px', gap: '2px',
             }}
           >
             {NAV_ITEMS.map(({ label, href, Icon, isPage }) => {
               const active = isActive({ label, href });
               const linkStyle = {
-                display: 'flex', alignItems: 'center', gap: '7px',
-                padding: '9px 20px', borderRadius: '9999px',
-                fontSize: '0.9375rem', fontWeight: active ? 600 : 500,
+                display: 'flex', alignItems: 'center', gap: '6px',
+                padding: '7px 16px', borderRadius: '9999px',
+                fontSize: '0.8125rem', fontWeight: active ? 600 : 500,
                 fontFamily: 'var(--font-hanken, system-ui)',
                 letterSpacing: '-0.01em', textDecoration: 'none',
                 color: active ? 'var(--background)' : 'var(--sectext)',
@@ -191,7 +191,7 @@ export default function NavigationBar() {
                   onMouseLeave={e => { if (!active) e.currentTarget.style.color = 'var(--sectext)'; }}
                   onClick={() => setMobile(false)}
                 >
-                  <Icon size={15} strokeWidth={1.8} aria-hidden="true" />
+                  <Icon size={14} strokeWidth={1.8} aria-hidden="true" />
                   {label}
                 </Link>
               ) : (
@@ -203,7 +203,7 @@ export default function NavigationBar() {
                   onMouseLeave={e => { if (!active) e.currentTarget.style.color = 'var(--sectext)'; }}
                   onClick={() => setActiveHash(label)}
                 >
-                  <Icon size={15} strokeWidth={1.8} aria-hidden="true" />
+                  <Icon size={14} strokeWidth={1.8} aria-hidden="true" />
                   {label}
                 </a>
               );
@@ -216,10 +216,10 @@ export default function NavigationBar() {
               href={isProjectsPage ? '/#contact' : '#contact'}
               className="hidden md:flex"
               style={{
-                display: 'flex', alignItems: 'center', gap: '7px',
-                padding: '9px 22px', borderRadius: '9999px',
+                display: 'flex', alignItems: 'center', gap: '6px',
+                padding: '7px 18px', borderRadius: '9999px',
                 border: '1px solid var(--bline)',
-                color: 'var(--primarytext)', fontSize: '0.9375rem', fontWeight: 600,
+                color: 'var(--primarytext)', fontSize: '0.8125rem', fontWeight: 500,
                 fontFamily: 'var(--font-hanken, system-ui)',
                 letterSpacing: '-0.01em', textDecoration: 'none', background: 'transparent',
                 transition: 'border-color 180ms ease, background 180ms ease',
